@@ -1,0 +1,48 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "jest": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "prettier",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "plugins": ["react", "jest", "@typescript-eslint"],
+    "settings": {
+        "react": {
+            "version": "18.2.0"
+        }
+    },
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "globals": {
+        "BodyInit": false
+    },
+    "rules": {
+        "no-empty": "error",
+        "no-unused-vars": [
+            "error",
+            {
+                "vars": "all",
+                "args": "all",
+                "ignoreRestSiblings": false,
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_"
+            }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ]
+    }
+}

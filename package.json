@@ -1,0 +1,25 @@
+{
+  "name": "africlite-bank",
+  "version": "1.0.0",
+  "description": "Africlite-bank is a pet project that implement MVP features of a banking system in NodeJs and ReactJs",
+  "main": "index.js",
+  "author": "Emmanuel Onah <emmajerry2016@gmail.com> (https://emmanuelonah.com/)",
+  "license": "MIT",
+  "scripts": {
+    "i:parent": "yarn install",
+    "i": "yarn i:parent && yarn --cwd ./server/ i && yarn --cwd ./client/ install",
+    "dev": "concurrently \"yarn --cwd ./client/ build\" \"yarn --cwd ./server/ dev\" \"yarn --cwd ./client/ dev\"",
+    "build": "concurrently \"yarn --cwd ./server/ dev\" \"yarn --cwd ./client/ dev\"",
+    "test": "concurrently \"yarn --cwd ./server/ test\" \"yarn --cwd ./client/ test\"",
+    "pre:commit": "concurrently \"yarn --cwd ./server/ pre:commit\" \"yarn --cwd ./client/ pre:commit\"",
+    "pre:push": "concurrently \"yarn --cwd ./server/ pre:push\" \"yarn --cwd ./client/ pre:push\"",
+    "prepare": "husky install",
+    "rm": "rm -rf node_modules yarn.lock && yarn cache clean && --cwd ./client/ rm -rf node_modules yarn.lock && cache clean && --cwd ./server/ rm -rf node_modules yarn.lock && yarn cache clean"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.1"
+  }
+}

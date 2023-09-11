@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(cors({ origin: configs.clientUrl }));
 app.use(helmet());
 app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.static(path.join(__dirname, '..', 'client-build')));
 
 app.use('/api/v1', apiRouterV1);
 app.use('/*', serveClient);

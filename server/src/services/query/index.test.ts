@@ -29,6 +29,10 @@ describe('Query', () => {
                     limit: 10,
                     skip: 10,
                     total: 100,
+                    prevPage: 1,
+                    nextPage: 3,
+                    hasPrevPage: true,
+                    hasNextPage: true,
                 },
             ],
             [
@@ -39,6 +43,10 @@ describe('Query', () => {
                     limit: 10,
                     skip: 10,
                     total: 100,
+                    prevPage: 1,
+                    nextPage: 3,
+                    hasPrevPage: true,
+                    hasNextPage: true,
                 },
             ],
             [
@@ -49,9 +57,15 @@ describe('Query', () => {
                     limit: 10,
                     skip: 0,
                     total: 89,
+                    prevPage: null,
+                    nextPage: 2,
+                    hasPrevPage: false,
+                    hasNextPage: true,
                 },
             ],
         ];
+
+        // @ts-ignore
         it.each(cases)('should return pagination data', (arg, expected) => {
             expect(Query.getPagination(arg)).toMatchObject(expected);
         });

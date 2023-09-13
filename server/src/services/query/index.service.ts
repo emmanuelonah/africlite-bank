@@ -24,8 +24,19 @@ export class Query {
     public static getPagination({ page, limit, total }: PaginationType) {
         const query = Query.getQuery({ page, limit });
         const pages = Math.floor(total / query.limit);
-        const formattedPage = Number(page) > 0 ? page : Query.DEFAULT_PAGE;
+        const formattedPage = Number(page) > 0 ? Number(page) : Query.DEFAULT_PAGE;
+        const prevPage = formattedPage > 1 ? formattedPage - 1 : null;
+        const nextPage = formattedPage === pages ? null : formattedPage + 1;
 
-        return { ...query, page: formattedPage, pages, total };
+        return {
+            ...query,
+            page: formattedPage,
+            pages,
+            total,
+            prevPage,
+            nextPage,
+            hasPrevPage: !!prevPage,
+            hasNextPage: !!nextPage,
+        };
     }
 }

@@ -31,6 +31,5 @@ export function errorHandler(err: ErrorType, _req: Request, res: Response, _next
         success: false,
         statusCode: error.statusCode,
         message: error.message || 'Server Error',
-        details: error.details,
     });
 }

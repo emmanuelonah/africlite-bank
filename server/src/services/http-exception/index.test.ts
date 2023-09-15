@@ -2,11 +2,10 @@ import { HttpException } from './index.service';
 
 describe('HttpException', () => {
     it('should return the correct error object', () => {
-        expect(new HttpException(404, 'Resource not found', 'The requested resource could not be found on the server')).toMatchObject({
+        expect(new HttpException(404, 'Resource not found')).toMatchObject({
             success: false,
             statusCode: 404,
             message: 'Resource not found',
-            details: 'The requested resource could not be found on the server',
         });
     });
 
@@ -15,7 +14,6 @@ describe('HttpException', () => {
             success: false,
             statusCode: 404,
             message: 'Resource not found',
-            details: '',
         });
     });
 });

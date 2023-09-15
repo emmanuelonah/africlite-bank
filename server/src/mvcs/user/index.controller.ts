@@ -36,7 +36,7 @@ export class UserController {
     public httpCreateUser = asyncHandler(async (req: Request<{}, UserRequestI>, res: Response, next: NextFunction) => {
         const user = await this.model.findUserByMultipleQueries(req.body);
 
-        if (user) return next(new HttpException(409, 'User already exists', JSON.stringify(req.body)));
+        if (user) return next(new HttpException(409, 'User already exists'));
 
         await this.model.createUser(req.body);
 

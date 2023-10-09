@@ -24,7 +24,7 @@ app.use(
     })
 );
 app.use(express.static(path.join(__dirname, '..', 'public')));
-app.use(express.static(path.join(__dirname, '..', 'client-build')));
+app.use(express.static(path.join(__dirname, '..', 'builds', 'client')));
 
 app.use('/api/v1', apiRouterV1);
 app.use('/*', serveClient);

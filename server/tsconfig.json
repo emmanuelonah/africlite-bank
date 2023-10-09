@@ -5,7 +5,7 @@
         "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
         "skipLibCheck": true,
         "sourceMap": true,
-        "outDir": "./server-build",
+        "outDir": "./builds/server",
         "rootDir": "./src",
         "moduleResolution": "node",
         "removeComments": true,

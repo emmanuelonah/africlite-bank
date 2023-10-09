@@ -1,5 +1,8 @@
 import 'colors';
-import http from 'http';
+
+import fs from 'fs';
+import path from 'path';
+import https from 'https';
 
 import app from './app';
 
@@ -8,7 +11,13 @@ import { connectDb } from './services/mongo/index.service';
 
 async function startServer() {
     await connectDb(() => {
-        const httpServer = http.createServer(app);
+        const httpServer = https.createServer(
+            {
+                key: fs.readFileSync(path.join(__dirname, '..', 'key.pem')),
+                cert: fs.readFileSync(path.join(__dirname, '..', 'cert.pem')),
+            },
+            app
+        );
 
         httpServer.listen(configs.serverPort, () => {
             console.log(`AFRICLITE BANK SERVER STARTED`.blue.bold);

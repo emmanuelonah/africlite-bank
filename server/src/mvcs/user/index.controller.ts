@@ -1,87 +1,20 @@
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 
-import { UserRequestI, UserSchemaI } from './index.types';
-
-import { UserModel } from './index.model';
+import { UserServices } from './index.services';
 import { asyncHandler } from '../../middlewares/async-handler';
-import { response } from '../../services/response/index.service';
-import { HttpException } from '../../services/http-exception/index.service';
 
 export class UserController {
-    model = new UserModel();
+    private userServices = new UserServices();
 
-    public httpGetUsers = asyncHandler(async (_req: Request, res: Response, _next: NextFunction) => {
-        const users = await this.model.findUsers();
+    public httpGetUsers = asyncHandler(this.userServices.getUsers as unknown as RequestHandler);
 
-        return res.status(200).json(response(users));
-    });
+    public httpGetUser = asyncHandler(this.userServices.getUser as unknown as RequestHandler);
 
-    public httpGetUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-        const { userId } = req.params;
+    public httpCreateUser = asyncHandler(this.userServices.createUser as unknown as RequestHandler);
 
-        if (!userId) return next(new HttpException(400, 'Missing user ID'));
+    public httpUpdateUser = asyncHandler(this.userServices.updateUser as unknown as RequestHandler);
 
-        const user = await this.model.findUserById(userId);
+    public httpPatchUser = asyncHandler(this.userServices.patchUser as unknown as RequestHandler);
 
-        if (!user) return next(new HttpException(404, `User with ID ${userId} is not found`));
-
-        return res.status(200).json(response(user));
-    });
-
-    /**
-     * How user creation is gonna happen:
-     * => During sign up, we derive account creation data and create account.
-     * => We then derive user creation data and create user. If we don't succeed, then we delete the created account
-     */
-    public httpCreateUser = asyncHandler(async (req: Request<{}, UserRequestI>, res: Response, next: NextFunction) => {
-        const user = await this.model.findUserByMultipleQueries(req.body);
-
-        if (user) return next(new HttpException(409, 'User already exists'));
-
-        await this.model.createUser(req.body);
-
-        return res.status(200).json(response(req.body));
-    });
-
-    public httpUpdateUser = asyncHandler(async (req: Request<any, UserSchemaI>, res: Response, next: NextFunction) => {
-        const { userId } = req.params;
-
-        if (!userId) return next(new HttpException(400, 'Missing user ID'));
-
-        const user = await this.model.findUserById(userId);
-
-        if (!user) return next(new HttpException(404, `User with ID ${userId} is not found`));
-
-        await this.model.updateUserById(userId, req.body);
-
-        return res.status(200).json(response(user));
-    });
-
-    public httpPatchUser = asyncHandler(async (req: Request<any, Partial<UserSchemaI>>, res: Response, next: NextFunction) => {
-        const { userId } = req.params;
-
-        if (!userId) return next(new HttpException(400, 'Missing user ID'));
-
-        const user = await this.model.findUserById(userId);
-
-        if (!user) return next(new HttpException(404, `User with ID ${userId} is not found`));
-
-        await this.model.patchUserById(userId, req.body);
-
-        return res.status(200).json(response(user));
-    });
-
-    public httpDeleteUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-        const { userId } = req.params;
-
-        if (!userId) return next(new HttpException(400, 'Missing user ID'));
-
-        const user = await this.model.findUserById(userId);
-
-        if (!user) return next(new HttpException(404, `User with ID ${userId} is not found`));
-
-        await this.model.deleteUserById(userId);
-
-        return res.status(200).json(response(user));
-    });
+    public httpDeleteUser = asyncHandler(this.userServices.deleteUser as unknown as RequestHandler);
 }

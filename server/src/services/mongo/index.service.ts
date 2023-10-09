@@ -1,7 +1,7 @@
 import 'colors';
 import mongoose from 'mongoose';
 
-import { configs } from '../../utils/configs/index.util';
+import { configs } from '../../utils/configs.util';
 
 mongoose.connection.on('open', () => {
     console.info(`🔑🔑🔑 Db connected on: ${configs.serverDbUri}`.green.underline);

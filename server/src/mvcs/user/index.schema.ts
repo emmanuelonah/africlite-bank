@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 import { UserSchemaI } from './index.types';
-import { _idToId } from '../../plugins/mongo-id-normalize.plugin/index.plugin';
+import { _idToId } from '../../plugins/mongo-id-normalize.plugin';
 
 const userSchema = new mongoose.Schema<UserSchemaI>(
     {

@@ -1,6 +1,6 @@
 import { Schema, type Document } from 'mongoose';
 
-import { _idToId } from './index.plugin';
+import { _idToId } from './mongo-id-normalize.plugin';
 
 describe.skip('_idToId', () => {
     it('should remove _id and add id virtual field to the schema', () => {

@@ -3,7 +3,7 @@ import http from 'http';
 
 import app from './app';
 
-import { configs } from './utils/configs/index.util';
+import { configs } from './utils/configs.util';
 import { connectDb } from './services/mongo/index.service';
 
 async function startServer() {

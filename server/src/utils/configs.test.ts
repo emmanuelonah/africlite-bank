@@ -1,4 +1,4 @@
-import { configs } from './index.util';
+import { configs } from './configs.util';
 
 describe('configs', () => {
     it('should return configuration object', () => {

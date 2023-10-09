@@ -3,7 +3,7 @@ import { UserRequestI } from './index.types';
 import { User } from './index.schema';
 
 export class UserModel {
-    ///GET
+    /// GET
     public findUsers() {
         return User.find({}, { __v: 0 });
     }
@@ -25,19 +25,19 @@ export class UserModel {
         return User.create(user);
     }
 
-    ///PUT
+    /// PUT
     public updateUserById(userId: string, user: UserRequestI) {
         return User.findByIdAndUpdate(userId, user, { new: true, runValidators: true });
     }
 
-    ///PATCH
+    /// PATCH
     public patchUserById(userId: string, user: Partial<UserRequestI>) {
         const _user = User.findOne({ email: user.email }, { __v: 0 });
 
         return User.findByIdAndUpdate(userId, Object.assign(_user, user), { new: true, runValidators: true });
     }
 
-    ///DELETE
+    /// DELETE
     public deleteUserById(userId: string) {
         return User.findByIdAndDelete(userId);
     }

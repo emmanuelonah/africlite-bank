@@ -8,8 +8,8 @@ type PaginationType = QueryType & {
 };
 
 export class Query {
-    public static DEFAULT_PAGE = 1;
-    public static DEFAULT_LIMIT = 0;
+    private static DEFAULT_PAGE = 1;
+    private static DEFAULT_LIMIT = 0;
 
     public static getQuery(arg: QueryType) {
         const formattedPage = Number(arg?.page);

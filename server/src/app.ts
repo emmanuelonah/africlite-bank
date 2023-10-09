@@ -6,7 +6,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 
 import { apiRouterV1 } from './routes/api-router.v1';
-import { configs } from './utils/configs/index.util';
+import { configs } from './utils/configs.util';
 import { serveClient } from './middlewares/serve-client';
 import { errorHandler } from './middlewares/error-handler';
 import { HttpException } from './services/http-exception/index.service';

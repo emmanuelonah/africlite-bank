@@ -1,36 +1,41 @@
 import { Document, Schema } from 'mongoose';
 
-/**
- * Type for Schema
- */
-export interface UserSchemaI extends Document {
-    id: string;
-    account: Schema.Types.ObjectId;
-    name: string;
+type SharedUserType = {
+    accountRef: Schema.Types.ObjectId;
+    lastName: string;
+    firstName: string;
+    dob: string;
     email: string;
     password: string;
     phone: string;
     address: string;
+    taxId: string;
+    personalIdType: string;
+    personalIdNo: string;
+};
+
+/**
+ * Type for Schema
+ */
+export interface UserSchemaI extends SharedUserType, Document {
+    id: string;
+    accountRef: Schema.Types.ObjectId;
+    lastName: string;
+    firstName: string;
+    dob: string;
+    email: string;
+    password: string;
+    phone: string;
+    address: string;
+    taxId: string;
+    personalIdType: string;
+    personalIdNo: string;
 }
 
 /**
  * Type for Client
  */
-export type UserRequestI = {
-    account: Schema.Types.ObjectId;
-    name: string;
-    email: string;
-    password: string;
-    phone: string;
-    address: string;
-};
-
-/**
- * Type for UserDTO constructor arg
- */
-export interface UserDTOConstructorArg extends UserRequestI {
-    id: string;
-}
+export type UserRequestI = SharedUserType;
 
 /**
  * Type for express request Parameter

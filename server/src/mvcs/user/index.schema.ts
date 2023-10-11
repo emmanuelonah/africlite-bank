@@ -5,14 +5,22 @@ import { _idToId } from '../../plugins/mongo-id-normalize.plugin';
 
 const userSchema = new mongoose.Schema<UserSchemaI>(
     {
-        account: {
+        accountRef: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Account',
             required: [true, 'Missing account ID'],
         },
-        name: {
+        lastName: {
             type: String,
-            required: [true, 'Missing name'],
+            required: [true, 'Missing last name'],
+        },
+        firstName: {
+            type: String,
+            required: [true, 'Missing first name'],
+        },
+        dob: {
+            type: String,
+            required: [true, 'Missing date of birth'],
         },
         email: {
             type: String,
@@ -50,10 +58,25 @@ const userSchema = new mongoose.Schema<UserSchemaI>(
             required: [true, 'Missing address'],
             match: [/^\d{10}$/, 'Please fill a valid phone number'],
         },
+        taxId: {
+            type: String,
+            unique: true,
+            required: [true, 'Missing tax id'],
+        },
+        personalIdType: {
+            type: String,
+            required: [true, 'Missing personal id type e.g passport, residence permit'],
+        },
+        personalIdNo: {
+            type: String,
+            unique: true,
+            required: [true, 'Missing personal id no'],
+        },
     },
     {
         collection: 'Users',
         timestamps: true,
+        versionKey: false,
     }
 );
 

@@ -43,6 +43,7 @@
         "typescript": "^5.2.2"
     },
     "dependencies": {
+        "class-validator": "^0.14.0",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
         "env-var": "^7.4.1",

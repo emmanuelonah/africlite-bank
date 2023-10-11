@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 
 import { UserServices } from './index.services';
-import { asyncHandler } from '../../middlewares/async-handler';
+import { asyncHandler } from '../../middlewares/async-handler.middleware';
 
 export class UserController {
     private userServices = new UserServices();

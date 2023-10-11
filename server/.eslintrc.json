@@ -6,8 +6,8 @@
         "jest": true
     },
     "overrides": [],
-    "extends": ["prettier", "eslint:recommended", "plugin:@typescript-eslint/recommended" /*"plugin:import/errors", "plugin:import/warnings" */],
-    "plugins": ["jest", /* "import", */ "@typescript-eslint"],
+    "extends": ["prettier", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
+    "plugins": ["jest", "@typescript-eslint"],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
@@ -32,17 +32,6 @@
                 "caughtErrorsIgnorePattern": "^_"
             }
         ],
-        /*  "import/order": [
-            "error",
-            {
-                "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
-                "newlines-between": "always",
-                "alphabetize": {
-                    "order": "asc",
-                    "caseInsensitive": true
-                }
-            }
-        ], */
         "semi": "error",
         "comma-dangle": "off",
         "dot-notation": "off",

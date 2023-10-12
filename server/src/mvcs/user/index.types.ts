@@ -1,5 +1,13 @@
 import { Document, Schema } from 'mongoose';
 
+/* eslint-disable no-unused-vars */
+export enum USER_ROLES {
+    admin,
+    customer,
+}
+
+/** @TODO add personalIdType enum and validation **/
+
 /**
  * @SharedUserType type represents a shared user with various personal information fields.
  * @property accountRef - The `accountRef` property is of type `Schema.Types.ObjectId` and is used to
@@ -30,6 +38,7 @@ type SharedUserType = {
     dob: string;
     email: string;
     password: string;
+    role: keyof typeof USER_ROLES;
     phone: string;
     address: string;
     taxId: string;
@@ -42,19 +51,8 @@ type SharedUserType = {
  * an interface called `UserSchemaI` that extends the `SharedUserType`
  * interface and the `Document` interface from the `mongoose` library.
  */
-export interface UserSchemaI extends SharedUserType, Document {
+export interface UserSchemaI extends SharedUserType, Omit<Document, '_id'> {
     id: string;
-    accountRef: Schema.Types.ObjectId;
-    lastName: string;
-    firstName: string;
-    dob: string;
-    email: string;
-    password: string;
-    phone: string;
-    address: string;
-    taxId: string;
-    personalIdType: string;
-    personalIdNo: string;
 }
 
 export type UserRequestI = SharedUserType;
@@ -65,3 +63,7 @@ export type UserRequestI = SharedUserType;
  * @property {string} userId - A string representing the user ID.
  */
 export type UserIdParam = { userId: string };
+
+export type UserQueryParams = {
+    include?: Array<string>; // e.g ?include=["accountRef"]
+};

@@ -7,6 +7,14 @@ export class UserController {
     private userServices = new UserServices();
 
     /**
+     * @httpCreateUser used to create a new user
+     * ````ts
+     * POST /users
+     * ```
+     */
+    public httpCreateUser = asyncHandler(this.userServices.createUser as unknown as RequestHandler);
+
+    /**
      * @httpGetUsers used to get users
      * ````ts
      * GET /users
@@ -21,14 +29,6 @@ export class UserController {
      * ```
      */
     public httpGetUser = asyncHandler(this.userServices.getUser as unknown as RequestHandler);
-
-    /**
-     * @httpCreateUser used to create a new user
-     * ````ts
-     * POST /users
-     * ```
-     */
-    public httpCreateUser = asyncHandler(this.userServices.createUser as unknown as RequestHandler);
 
     /**
      * @httpUpdateUser used to update an existing user

@@ -3,13 +3,13 @@ import { Router } from 'express';
 import { UserController } from './index.controller';
 
 const userRouter = Router();
-const controller = new UserController();
+const userController = new UserController();
 
-userRouter.route('/').get(controller.httpGetUsers);
-userRouter.route('/:userId').get(controller.httpGetUser);
-userRouter.route('/').post(controller.httpCreateUser);
-userRouter.route('/:userId').put(controller.httpUpdateUser);
-userRouter.route('/:userId').patch(controller.httpPatchUser);
-userRouter.route('/:userId').delete(controller.httpDeleteUser);
+userRouter.route('/').post(userController.httpCreateUser);
+userRouter.route('/').get(userController.httpGetUsers);
+userRouter.route('/:userId').get(userController.httpGetUser);
+userRouter.route('/:userId').put(userController.httpUpdateUser);
+userRouter.route('/:userId').patch(userController.httpPatchUser);
+userRouter.route('/:userId').delete(userController.httpDeleteUser);
 
 export { userRouter };

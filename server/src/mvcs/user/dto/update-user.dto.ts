@@ -28,6 +28,11 @@ export class UpdateUserDto {
         password: string;
 
     @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+        role: string;
+
+    @IsOptional()
     @IsPhoneNumber()
         phone: string;
 

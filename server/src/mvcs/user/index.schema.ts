@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema<UserSchemaI>(
         accountRef: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Account',
-            required: [true, 'Missing account ID'],
+            required: false,
         },
         lastName: {
             type: String,
@@ -27,10 +27,10 @@ const userSchema = new mongoose.Schema<UserSchemaI>(
             unique: true,
             required: [true, 'Missing email'],
             validate: {
-                validator: function (v: string) {
-                    return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(v);
+                validator(value: string) {
+                    return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(value);
                 },
-                message: function (props) {
+                message(props) {
                     return `${props.value} is not a valid email!`;
                 },
             },
@@ -40,12 +40,10 @@ const userSchema = new mongoose.Schema<UserSchemaI>(
             required: [true, 'Missing password'],
             minlength: [8, 'Password must be at least 8 characters long'],
             validate: {
-                validator: function (v: string) {
-                    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(v);
+                validator(value: string) {
+                    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value);
                 },
-                message: function () {
-                    return `Password should have at least one number, one lowercase and one uppercase letter`;
-                },
+                message: 'Password should have at least one number, one lowercase and one uppercase letter',
             },
         },
         phone: {
@@ -65,7 +63,7 @@ const userSchema = new mongoose.Schema<UserSchemaI>(
         },
         personalIdType: {
             type: String,
-            required: [true, 'Missing personal id type e.g passport, residence permit'],
+            required: [true, 'Missing personal id type e.g: "passport, residence permit, driver\'s license"'],
         },
         personalIdNo: {
             type: String,

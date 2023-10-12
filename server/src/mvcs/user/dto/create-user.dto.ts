@@ -22,6 +22,10 @@ export class CreateUserDto {
     @Min(8)
         password: string;
 
+    @IsString()
+    @IsNotEmpty()
+        role: string;
+
     @IsPhoneNumber()
         phone: string;
 

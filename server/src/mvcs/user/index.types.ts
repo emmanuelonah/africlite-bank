@@ -1,5 +1,7 @@
 import { Document, Schema } from 'mongoose';
 
+import { ClientResponse } from '../../services/response/index.service';
+
 /* eslint-disable no-unused-vars */
 export enum USER_ROLES {
     admin,
@@ -37,7 +39,7 @@ type SharedUserType = {
     firstName: string;
     dob: string;
     email: string;
-    password: string;
+    password?: string;
     role: keyof typeof USER_ROLES;
     phone: string;
     address: string;
@@ -51,11 +53,12 @@ type SharedUserType = {
  * an interface called `UserSchemaI` that extends the `SharedUserType`
  * interface and the `Document` interface from the `mongoose` library.
  */
-export interface UserSchemaI extends SharedUserType, Omit<Document, '_id'> {
-    id: string;
-}
+export interface UserSchemaI extends SharedUserType, Document {}
 
 export type UserRequestI = SharedUserType;
+
+type D = SharedUserType & { id: string };
+export interface UserResponseI extends ClientResponse<D> {}
 
 /**
  * @UserIdParam type represents a parameter object with a single property
@@ -65,5 +68,12 @@ export type UserRequestI = SharedUserType;
 export type UserIdParam = { userId: string };
 
 export type UserQueryParams = {
+    /**
+     * @include to be added to client query parameters
+     * @sample
+     * ```ts
+     *  /users?include=["accountRef"]
+     * ```
+     */
     include?: Array<string>; // e.g ?include=["accountRef"]
 };

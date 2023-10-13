@@ -1,3 +1,3 @@
-import { UpdateAuthorDto } from './update-account.dto';
+import { UpdateAccountDto } from './update-account.dto';
 
-export class PatchAuthorDto extends UpdateAuthorDto {}
+export class PatchAccountDto extends UpdateAccountDto {}

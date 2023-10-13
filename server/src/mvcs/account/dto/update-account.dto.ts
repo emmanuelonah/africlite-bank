@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsIBAN, IsBIC, IsOptional } from 'class-validator';
 
-export class UpdateAuthorDto {
+export class UpdateAccountDto {
     @IsOptional()
     @IsString()
     @IsNotEmpty()

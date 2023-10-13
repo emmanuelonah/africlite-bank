@@ -1,56 +1,76 @@
+import { Schema } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 
 import { UserModel } from './index.model';
 import { UserIdParam } from './index.types';
 import { initDto } from '../../utils/init-dto.util';
+import { AccountModel } from '../account/index.model';
 import { response } from '../../services/response/index.service';
 import { CreateUserDto, UpdateUserDto, PatchUserDto } from './dto';
-import { UserRequestI, UserSchemaI, UserQueryParams } from './index.types';
 import { HttpException } from '../../services/http-exception/index.service';
+import { UserRequestI, UserResponseI, UserQueryParams } from './index.types';
 
 export class UserServices {
-    private model = new UserModel();
+    private userModel = new UserModel();
 
-    public async createUser(req: Request<never, UserRequestI, UserRequestI>, res: Response, next: NextFunction) {
+    public createUser = async (
+        req: Request<never, UserResponseI, UserRequestI>,
+        res: Response<UserResponseI>,
+        next: NextFunction
+    ) => {
         const { hasErrors, error } = await initDto(CreateUserDto, req.body);
         if (hasErrors) return next(new HttpException(400, error));
 
-        const user = await this.model.findUserByEmail(req.body.email);
+        const user = await this.userModel.findUserByEmail(req.body.email);
         if (user) return next(new HttpException(409, 'User already exists'));
 
-        const createdUser = await this.model.createUser(req.body);
+        const createdUser = await this.userModel.createUser(req.body);
+        delete req.body.password;
         return res.status(200).json(response(Object.assign(req.body, { id: createdUser.id })));
-    }
+    };
 
-    public async getUsers(req: Request<never, {}, {}, UserQueryParams>, res: Response, _next: NextFunction) {
+    public getUsers = async (
+        req: Request<never, UserResponseI[], never, UserQueryParams>,
+        res: Response<UserResponseI[]>,
+        _next: NextFunction
+    ) => {
         let users;
 
         if (req.query.include?.includes?.('accountRef')) {
-            users = await this.model.findUsers().populate('Account').lean().exec();
+            users = await this.userModel.findUsers().populate('Account').lean().exec();
         } else {
-            users = await this.model.findUsers().lean().exec();
+            users = await this.userModel.findUsers().lean().exec();
         }
-        return res.status(200).json(response(users));
-    }
+        return res.status(200).json(response(users) as unknown as UserResponseI[]);
+    };
 
-    public async getUser(req: Request<UserIdParam, {}, {}, UserQueryParams>, res: Response, next: NextFunction) {
+    public getUser = async (
+        req: Request<UserIdParam, UserResponseI, never, UserQueryParams>,
+        res: Response<UserResponseI>,
+        next: NextFunction
+    ) => {
         const { userId } = req.params;
         if (!userId) return next(new HttpException(400, 'Missing user ID'));
 
         let user;
 
         if (req.query.include?.includes?.('accountRef')) {
-            user = await this.model.findUserById(userId).populate('Account').lean().exec();
+            user = await this.userModel.findUserById(userId).populate('Account').lean().exec();
         } else {
-            user = await this.model.findUserById(userId).lean().exec();
+            user = await this.userModel.findUserById(userId).lean().exec();
         }
 
+        console.log('USER', user);
+
         if (!user) return next(new HttpException(404, `User with ID ${userId} is not found`));
+        return res.status(200).json(response(user) as UserResponseI);
+    };
 
-        return res.status(200).json(response(user));
-    }
-
-    public async updateUser(req: Request<UserIdParam, {}, UserRequestI, UserQueryParams>, res: Response, next: NextFunction) {
+    public updateUser = async (
+        req: Request<UserIdParam, UserResponseI, UserRequestI, UserQueryParams>,
+        res: Response<UserResponseI>,
+        next: NextFunction
+    ) => {
         const { hasErrors, error } = await initDto(UpdateUserDto, req.body);
         if (hasErrors) return next(new HttpException(400, error));
 
@@ -60,18 +80,22 @@ export class UserServices {
         let user;
 
         if (req.query.include?.includes?.('accountRef')) {
-            user = await this.model.findUserById(userId).populate('Account').lean().exec();
+            user = await this.userModel.findUserById(userId).populate('Account').lean().exec();
         } else {
-            user = await this.model.findUserById(userId).lean().exec();
+            user = await this.userModel.findUserById(userId).lean().exec();
         }
 
         if (!user) return next(new HttpException(404, `User with ID ${userId} is not found`));
 
-        await this.model.updateUserById(userId, req.body);
-        return res.status(200).json(response(user));
-    }
+        await this.userModel.updateUserById(userId, req.body);
+        return res.status(200).json(response(user) as UserResponseI);
+    };
 
-    public async patchUser(req: Request<UserIdParam, {}, Partial<UserSchemaI>, UserQueryParams>, res: Response, next: NextFunction) {
+    public patchUser = async (
+        req: Request<UserIdParam, UserResponseI, Partial<UserRequestI>, UserQueryParams>,
+        res: Response<UserResponseI>,
+        next: NextFunction
+    ) => {
         const { hasErrors, error } = await initDto(PatchUserDto, req.body);
         if (hasErrors) return next(new HttpException(400, error));
 
@@ -81,32 +105,46 @@ export class UserServices {
         let user;
 
         if (req.query.include?.includes?.('accountRef')) {
-            user = await this.model.findUserById(userId).populate('Account').lean().exec();
+            user = await this.userModel.findUserById(userId).populate('Account').lean().exec();
         } else {
-            user = await this.model.findUserById(userId).lean().exec();
+            user = await this.userModel.findUserById(userId).lean().exec();
         }
 
         if (!user) return next(new HttpException(404, `User with ID ${userId} is not found`));
 
-        await this.model.patchUserById(userId, req.body);
-        return res.status(200).json(response(user));
-    }
+        await this.userModel.patchUserById(userId, req.body);
+        return res.status(200).json(response(user) as UserResponseI);
+    };
 
-    public async deleteUser(req: Request<UserIdParam, {}, {}, UserQueryParams>, res: Response, next: NextFunction) {
+    public deleteUser = async (
+        req: Request<UserIdParam, UserResponseI, never, UserQueryParams>,
+        res: Response<UserResponseI>,
+        next: NextFunction
+    ) => {
         const { userId } = req.params;
         if (!userId) return next(new HttpException(400, 'Missing user ID'));
 
         let user;
 
         if (req.query.include?.includes?.('accountRef')) {
-            user = await this.model.findUserById(userId).populate('Account').lean().exec();
+            user = await this.userModel.findUserById(userId).populate('Account').lean().exec();
         } else {
-            user = await this.model.findUserById(userId).lean().exec();
+            user = await this.userModel.findUserById(userId).lean().exec();
         }
 
         if (!user) return next(new HttpException(404, `User with ID ${userId} is not found`));
 
-        await this.model.deleteUserById(userId);
-        return res.status(200).json(response(user));
-    }
+        await this.userModel.deleteUserById(userId);
+
+        const accountModel = new AccountModel();
+        const accountToDelete = await accountModel
+            .findAccountByMultipleQueries({
+                userRef: userId as unknown as Schema.Types.ObjectId,
+            })
+            .lean()
+            .exec();
+        await accountModel.deleteAccountById(accountToDelete?.id);
+
+        return res.status(200).json(response(user) as UserResponseI);
+    };
 }

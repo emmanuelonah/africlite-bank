@@ -1,5 +1,7 @@
 import { Document, Schema } from 'mongoose';
 
+import { ClientResponse } from '../../services/response/index.service';
+
 /**
  * @SharedAccountType type represents a shared bank account with user reference, bank details, and
  * branch information.
@@ -23,10 +25,25 @@ type SharedAccountType = {
     branch: string;
 };
 
-export interface AccountSchemaI extends SharedAccountType, Omit<Document, '_id'> {
-    id: string;
-}
+export interface AccountSchemaI extends SharedAccountType, Document {}
 
-export interface AccountRequestI extends SharedAccountType {}
+export type AccountRequestI = SharedAccountType;
 
+type D = SharedAccountType & { id: string };
+export interface AccountResponseI extends ClientResponse<D> {}
+
+/**
+ * @AccountIdParam type represents a parameter object with an accountId property of type string.
+ * @property {string} accountId - A string representing the account ID.
+ */
 export type AccountIdParam = { accountId: string };
+
+export type AccountQueryParams = {
+    /**
+     * @include to be added to client query parameters
+     * @sample ```ts
+     *  /users?include=["userRef"]
+     * ```
+     */
+    include?: Array<string>; // e.g ?include=["userRef"]
+};

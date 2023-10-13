@@ -20,7 +20,7 @@ export class AccountModel {
      * Mongoose documents, and the exec() method is used to execute the query.
      */
     public findAccounts() {
-        return Account.find({}, { createdAt: 0, updatedAt: 0 }).lean().exec();
+        return Account.find({}, { createdAt: 0, updatedAt: 0 });
     }
 
     /**
@@ -31,7 +31,32 @@ export class AccountModel {
      * excluded, and the result is converted to a plain JavaScript object using the `lean()` method.
      */
     public findAccountById(accountId: string) {
-        return Account.findById(accountId, { createdAt: 0, updatedAt: 0 }).lean().exec();
+        return Account.findById(accountId, { createdAt: 0, updatedAt: 0 });
+    }
+
+    /**
+     * @findAccountByIban finds an account by its IBAN and returns it without including the
+     * `createdAt` and `updatedAt` fields.
+     * @param {string} iban - The `iban` parameter is a string that represents the International Bank
+     * Account Number (IBAN) of an account.
+     * @returns the result of the `Account.findOne()` method.
+     */
+    public findAccountByIban(iban: string) {
+        return Account.findOne({ iban }, { createdAt: 0, updatedAt: 0 });
+    }
+
+    /**
+     * @findAccountByMultipleQueries finds an account by multiple queries and returns it without the createdAt and updatedAt
+     * fields.
+     * @param account - A partial object of type AccountRequestI. This object contains properties that can
+     * be used to query and find an account in the database.
+     * @returns the result of the `findOne` method of the `Account` model. The `findOne` method is used to
+     * find a single document in the `Account` collection that matches the given query criteria. In this
+     * case, the query criteria is the `account` object, which is a partial `AccountRequestI` object. The
+     * second argument `{ createdAt: 0, updatedAt:0}
+     */
+    public findAccountByMultipleQueries(account: Partial<AccountRequestI>) {
+        return Account.findOne(account, { createdAt: 0, updatedAt: 0 });
     }
 
     /**
@@ -43,8 +68,8 @@ export class AccountModel {
      * @returns the result of the `Account.findByIdAndUpdate` method, which is a promise that resolves to
      * the updated account object.
      */
-    public updateAccount(accountId: string, account: Partial<AccountRequestI>) {
-        return Account.findByIdAndUpdate(accountId, account, { new: true, runValidators: true }).lean().exec();
+    public updateAccountById(accountId: string, account: Partial<AccountRequestI>) {
+        return Account.findByIdAndUpdate(accountId, account, { new: true, runValidators: true });
     }
 
     /**
@@ -54,9 +79,12 @@ export class AccountModel {
      * represents the updated account information that needs to be patched.
      * @returns the updated account object.
      */
-    public async patchAccount(accountId: string, account: Partial<AccountRequestI>) {
+    public async patchAccountById(accountId: string, account: Partial<AccountRequestI>) {
         const _account = await Account.findById(accountId);
-        return Account.findByIdAndUpdate(accountId, Object.assign(_account, account), { new: true, runValidators: true }).lean().exec();
+        return Account.findByIdAndUpdate(accountId, Object.assign(_account!, account), {
+            new: true,
+            runValidators: true,
+        });
     }
 
     /**

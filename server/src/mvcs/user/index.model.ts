@@ -81,7 +81,7 @@ export class UserModel {
      */
     public async patchUserById(userId: string, user: Partial<UserRequestI>) {
         const _user = await User.findById(userId, { createdAt: 0, updatedAt: 0 });
-        return User.findByIdAndUpdate(userId, Object.assign(_user, user), { new: true, runValidators: true });
+        return User.findByIdAndUpdate(userId, Object.assign(_user!, user), { new: true, runValidators: true });
     }
 
     /**

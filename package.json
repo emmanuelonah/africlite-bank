@@ -7,14 +7,14 @@
   "license": "MIT",
   "scripts": {
     "i:parent": "yarn install",
-    "i": "yarn i:parent && yarn --cwd ./server/ i && yarn --cwd ./client/ install",
-    "dev": "concurrently \"yarn --cwd ./client/ build\" \"yarn --cwd ./server/ dev\" \"yarn --cwd ./client/ dev\"",
-    "build": "concurrently \"yarn --cwd ./server/ build\" \"yarn --cwd ./client/ build\"",
-    "test": "concurrently \"yarn --cwd ./server/ test\" \"yarn --cwd ./client/ test\"",
-    "pre:commit": "concurrently \"yarn --cwd ./server/ pre:commit\" \"yarn --cwd ./client/ pre:commit\"",
-    "pre:push": "concurrently \"yarn --cwd ./server/ pre:push\" \"yarn --cwd ./client/ pre:push\"",
+    "i": "yarn i:parent && yarn --cwd ./server/ i && yarn --cwd ./client/customer install",
+    "dev": "concurrently \"yarn --cwd ./client/customer build\" \"yarn --cwd ./server/ dev\" \"yarn --cwd ./client/customer dev\"",
+    "build": "concurrently \"yarn --cwd ./server/ build\" \"yarn --cwd ./client/customer build\"",
+    "test": "concurrently \"yarn --cwd ./server/ test\" \"yarn --cwd ./client/customer test\"",
+    "pre:commit": "concurrently \"yarn --cwd ./server/ pre:commit\" \"yarn --cwd ./client/customer pre:commit\"",
+    "pre:push": "concurrently \"yarn --cwd ./server/ pre:push\" \"yarn --cwd ./client/customer pre:push\"",
     "prepare": "husky install",
-    "rm": "rm -rf node_modules yarn.lock && yarn cache clean && --cwd ./client/ rm -rf node_modules yarn.lock && cache clean && --cwd ./server/ rm -rf node_modules yarn.lock && yarn cache clean"
+    "rm": "rm -rf node_modules yarn.lock && yarn cache clean && --cwd ./client/customer rm -rf node_modules yarn.lock && cache clean && --cwd ./server/ rm -rf node_modules yarn.lock && yarn cache clean"
   },
   "devDependencies": {
     "husky": "^8.0.0"

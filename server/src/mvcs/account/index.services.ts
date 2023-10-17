@@ -159,8 +159,9 @@ export class AccountServices {
             account = await this.accountModel.findAccountById(accountId).lean().exec();
         }
 
-        if (!account)
+        if (!account) {
             return next(new HttpException(404, `Account with ID ${accountId} is not found`));
+        }
 
         await this.accountModel.deleteAccountById(accountId);
         return res.status(200).json(response(account) as AccountResponseI);

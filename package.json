@@ -6,8 +6,8 @@
   "author": "Emmanuel Onah <emmajerry2016@gmail.com> (https://emmanuelonah.com/)",
   "license": "MIT",
   "scripts": {
-    "i:parent": "yarn install",
-    "i": "yarn i:parent && yarn --cwd ./server/ i && yarn --cwd ./client/customer install",
+    "in": "yarn install",
+    "in:all": "concurrently \"yarn --cwd ./client in\" \"yarn --cwd ./client/components in\" \"yarn --cwd ./client/customer in\" \"yarn --cwd ./server/ in\"",
     "dev": "concurrently \"yarn --cwd ./client/customer build\" \"yarn --cwd ./server/ dev\" \"yarn --cwd ./client/customer dev\"",
     "build": "concurrently \"yarn --cwd ./server/ build\" \"yarn --cwd ./client/customer build\"",
     "test": "concurrently \"yarn --cwd ./server/ test\" \"yarn --cwd ./client/customer test\"",

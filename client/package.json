@@ -1,0 +1,14 @@
+{
+  "name": "@afb/client",
+  "private": true,
+  "workspaces": [
+  "client/*"
+  ],
+  "scripts": {
+    "in": "yarn install",
+    "setup":"yarn config set workspaces-experimental true"
+  },
+  "devDependencies": {
+    "lerna": "^7.4.0"
+  }
+}

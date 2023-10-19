@@ -2,13 +2,29 @@
   "name": "@afb/client",
   "private": true,
   "workspaces": [
-  "client/*"
+    "client/*"
   ],
   "scripts": {
     "in": "yarn install",
-    "setup":"yarn config set workspaces-experimental true"
+    "setup": "yarn config set workspaces-experimental true",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
-    "lerna": "^7.4.0"
+    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-react": "^7.22.15",
+    "@storybook/addon-essentials": "^7.5.0",
+    "@storybook/addon-interactions": "^7.5.0",
+    "@storybook/addon-links": "^7.5.0",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.5.0",
+    "@storybook/react": "^7.5.0",
+    "@storybook/react-webpack5": "^7.5.0",
+    "@storybook/testing-library": "^0.2.2",
+    "lerna": "^7.4.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.5.0"
   }
 }

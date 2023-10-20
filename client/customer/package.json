@@ -2,9 +2,9 @@
     "name": "@afb/customer",
     "version": "0.1.0",
     "private": true,
-      "scripts": {
+    "scripts": {
         "in": "yarn install",
-        "l":"yarn link @afb/components",
+        "l": "yarn link @afb/components && yarn link @afb/utils",
         "dev": "react-scripts start",
         "build": "BUILD_PATH=../../../server/builds/client react-scripts build",
         "test": "react-scripts test",
@@ -13,8 +13,9 @@
         "format": "prettier --write .",
         "pre:commit": "yarn run lint",
         "pre:push": "yarn run react-scripts test --watchAll=false && yarn run build",
-        "@afb/components":"1.0.0"
-
+        "test:cv": "yarn run test --coverage --watchAll=false",
+        "@afb/components": "1.0.0",
+        "@afb/utils": "1.0.0"
     },
     "dependencies": {
         "@testing-library/jest-dom": "^5.14.1",

@@ -8,7 +8,8 @@
     "in": "yarn install",
     "setup": "yarn config set workspaces-experimental true",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test:cv": ""
   },
   "devDependencies": {
     "@babel/preset-env": "^7.23.2",

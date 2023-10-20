@@ -15,6 +15,7 @@
         "test:watch": "yarn run test --watch",
         "clean": "rimraf ./dist",
         "lint": "npx eslint . --ext .ts",
+        "test:cv": "yarn run test --coverage --watchAll=false",
         "format": "prettier --write './src/**/*.ts'",
         "pre:commit": "yarn run lint",
         "pre:push": "yarn run test --watchAll=false && yarn run build"

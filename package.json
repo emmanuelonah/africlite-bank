@@ -11,6 +11,7 @@
     "dev": "concurrently \"yarn --cwd ./client/customer build\" \"yarn --cwd ./server/ dev\" \"yarn --cwd ./client/customer dev\"",
     "build": "concurrently \"yarn --cwd ./server/ build\" \"yarn --cwd ./client/customer build\"",
     "test": "concurrently \"yarn --cwd ./server/ test\" \"yarn --cwd ./client/customer test\"",
+    "test:cv": "",
     "pre:commit": "concurrently \"yarn --cwd ./server/ pre:commit\" \"yarn --cwd ./client/customer pre:commit\"",
     "pre:push": "concurrently \"yarn --cwd ./server/ pre:push\" \"yarn --cwd ./client/customer pre:push\"",
     "prepare": "husky install",

@@ -8,7 +8,7 @@ export class AccountModel {
      * @returns The `createAccount` function is returning the result of calling the `Account.create` method
      * with the `account` parameter.
      */
-    public createAccount(account: AccountRequestI) {
+    createAccount(account: AccountRequestI) {
         return Account.create(account);
     }
 
@@ -19,7 +19,7 @@ export class AccountModel {
      * be included in the results. The lean() method is used to return plain JavaScript objects instead of
      * Mongoose documents, and the exec() method is used to execute the query.
      */
-    public findAccounts() {
+    findAccounts() {
         return Account.find({}, { createdAt: 0, updatedAt: 0 });
     }
 
@@ -30,7 +30,7 @@ export class AccountModel {
      * @returns the result of the `Account.findById` query, with the `createdAt` and `updatedAt` fields
      * excluded, and the result is converted to a plain JavaScript object using the `lean()` method.
      */
-    public findAccountById(accountId: string) {
+    findAccountById(accountId: string) {
         return Account.findById(accountId, { createdAt: 0, updatedAt: 0 });
     }
 
@@ -41,7 +41,7 @@ export class AccountModel {
      * Account Number (IBAN) of an account.
      * @returns the result of the `Account.findOne()` method.
      */
-    public findAccountByIban(iban: string) {
+    findAccountByIban(iban: string) {
         return Account.findOne({ iban }, { createdAt: 0, updatedAt: 0 });
     }
 
@@ -55,7 +55,7 @@ export class AccountModel {
      * case, the query criteria is the `account` object, which is a partial `AccountRequestI` object. The
      * second argument `{ createdAt: 0, updatedAt:0}
      */
-    public findAccountByMultipleQueries(account: Partial<AccountRequestI>) {
+    findAccountByMultipleQueries(account: Partial<AccountRequestI>) {
         return Account.findOne(account, { createdAt: 0, updatedAt: 0 });
     }
 
@@ -68,7 +68,7 @@ export class AccountModel {
      * @returns the result of the `Account.findByIdAndUpdate` method, which is a promise that resolves to
      * the updated account object.
      */
-    public updateAccountById(accountId: string, account: Partial<AccountRequestI>) {
+    updateAccountById(accountId: string, account: Partial<AccountRequestI>) {
         return Account.findByIdAndUpdate(accountId, account, { new: true, runValidators: true });
     }
 
@@ -79,7 +79,7 @@ export class AccountModel {
      * represents the updated account information that needs to be patched.
      * @returns the updated account object.
      */
-    public async patchAccountById(accountId: string, account: Partial<AccountRequestI>) {
+    async patchAccountById(accountId: string, account: Partial<AccountRequestI>) {
         const _account = await Account.findById(accountId);
         return Account.findByIdAndUpdate(accountId, Object.assign(_account!, account), {
             new: true,
@@ -94,7 +94,7 @@ export class AccountModel {
      * @returns the result of the `Account.findByIdAndDelete(accountId)` method.
      */
 
-    public deleteAccountById(accountId: string) {
+    deleteAccountById(accountId: string) {
         return Account.findByIdAndDelete(accountId);
     }
 }

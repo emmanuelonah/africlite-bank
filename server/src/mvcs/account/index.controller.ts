@@ -12,7 +12,7 @@ export class AccountController {
      * POST /accounts
      * ```
      */
-    public httpCreateAccount = asyncHandler(
+    httpCreateAccount = asyncHandler(
         this.accountServices.createAccount as unknown as RequestHandler
     );
 
@@ -22,9 +22,7 @@ export class AccountController {
      * GET /accounts
      * ```
      */
-    public httpGetAccounts = asyncHandler(
-        this.accountServices.getAccounts as unknown as RequestHandler
-    );
+    httpGetAccounts = asyncHandler(this.accountServices.getAccounts as unknown as RequestHandler);
 
     /**
      * @httpGetAccount used to get a account
@@ -32,9 +30,7 @@ export class AccountController {
      * GET /accounts/:accountId
      * ```
      */
-    public httpGetAccount = asyncHandler(
-        this.accountServices.getAccount as unknown as RequestHandler
-    );
+    httpGetAccount = asyncHandler(this.accountServices.getAccount as unknown as RequestHandler);
 
     /**
      * @httpUpdateAccount used to update an existing account
@@ -42,7 +38,7 @@ export class AccountController {
      * PUT /accounts/:accountId
      * ```
      */
-    public httpUpdateAccount = asyncHandler(
+    httpUpdateAccount = asyncHandler(
         this.accountServices.updateAccount as unknown as RequestHandler
     );
 
@@ -52,9 +48,7 @@ export class AccountController {
      * PATCH /accounts/:accountId
      * ```
      */
-    public httpPatchAccount = asyncHandler(
-        this.accountServices.patchAccount as unknown as RequestHandler
-    );
+    httpPatchAccount = asyncHandler(this.accountServices.patchAccount as unknown as RequestHandler);
 
     /**
      * @httpDeleteAccount used to delete an existing account
@@ -62,7 +56,7 @@ export class AccountController {
      * DELETE /accounts/:accountId
      * ```
      */
-    public httpDeleteAccount = asyncHandler(
+    httpDeleteAccount = asyncHandler(
         this.accountServices.deleteAccount as unknown as RequestHandler
     );
 }

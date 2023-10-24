@@ -10,7 +10,7 @@ export class UserModel {
      * @returns The createUser function is returning the result of calling the User.create method with the
      * user parameter.
      */
-    public createUser(user: UserRequestI) {
+    createUser(user: UserRequestI) {
         return User.create(user);
     }
 
@@ -22,7 +22,7 @@ export class UserModel {
      * is used to exclude the `createdAt` and `updatedAt` fields from the returned documents. The `lean()`
      * method is used to convert the documents to
      */
-    public findUsers() {
+    findUsers() {
         return User.find({}, { createdAt: 0, updatedAt: 0 });
     }
 
@@ -33,7 +33,7 @@ export class UserModel {
      * @returns a promise that resolves to the user object with the specified email. The user object will
      * not include the createdAt and updatedAt fields.
      */
-    public findUserByEmail(email: string) {
+    findUserByEmail(email: string) {
         return User.findOne({ email }, { createdAt: 0, updatedAt: 0 });
     }
 
@@ -44,7 +44,7 @@ export class UserModel {
      * @returns a promise that resolves to the user object with the specified userId. The user object will
      * not include the createdAt and updatedAt fields.
      */
-    public findUserById(userId: string) {
+    findUserById(userId: string) {
         return User.findById(userId, { createdAt: 0, updatedAt: 0 });
     }
 
@@ -56,7 +56,7 @@ export class UserModel {
      * @returns a promise that resolves to a user object that matches the provided partial user request.
      * The returned user object will not include the createdAt and updatedAt fields.
      */
-    public findUserByMultipleQueries(user: Partial<UserRequestI>) {
+    findUserByMultipleQueries(user: Partial<UserRequestI>) {
         return User.findOne(user, { createdAt: 0, updatedAt: 0 });
     }
 
@@ -67,7 +67,7 @@ export class UserModel {
      * the updated information for the user that needs to be updated in the database.
      * @returns the result of the `User.findByIdAndUpdate` method.
      */
-    public updateUserById(userId: string, user: UserRequestI) {
+    updateUserById(userId: string, user: UserRequestI) {
         return User.findByIdAndUpdate(userId, user, { new: true, runValidators: true });
     }
 
@@ -79,9 +79,12 @@ export class UserModel {
      * updated user data that needs to be patched.
      * @returns the result of the `User.findByIdAndUpdate` method.
      */
-    public async patchUserById(userId: string, user: Partial<UserRequestI>) {
+    async patchUserById(userId: string, user: Partial<UserRequestI>) {
         const _user = await User.findById(userId, { createdAt: 0, updatedAt: 0 });
-        return User.findByIdAndUpdate(userId, Object.assign(_user!, user), { new: true, runValidators: true });
+        return User.findByIdAndUpdate(userId, Object.assign(_user!, user), {
+            new: true,
+            runValidators: true,
+        });
     }
 
     /**
@@ -89,7 +92,7 @@ export class UserModel {
      * @param {string} userId - A string representing the unique identifier of the user to be deleted.
      * @returns The `User.findByIdAndDelete(userId)` method is being returned.
      */
-    public deleteUserById(userId: string) {
+    deleteUserById(userId: string) {
         return User.findByIdAndDelete(userId);
     }
 }

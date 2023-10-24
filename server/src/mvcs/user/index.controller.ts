@@ -12,7 +12,7 @@ export class UserController {
      * POST /users
      * ```
      */
-    public httpCreateUser = asyncHandler(this.userServices.createUser as unknown as RequestHandler);
+    httpCreateUser = asyncHandler(this.userServices.createUser as unknown as RequestHandler);
 
     /**
      * @httpGetUsers used to get users
@@ -20,7 +20,7 @@ export class UserController {
      * GET /users
      * ```
      */
-    public httpGetUsers = asyncHandler(this.userServices.getUsers as unknown as RequestHandler);
+    httpGetUsers = asyncHandler(this.userServices.getUsers as unknown as RequestHandler);
 
     /**
      * @httpGetUser used to get a user
@@ -28,7 +28,7 @@ export class UserController {
      * GET /users/:userId
      * ```
      */
-    public httpGetUser = asyncHandler(this.userServices.getUser as unknown as RequestHandler);
+    httpGetUser = asyncHandler(this.userServices.getUser as unknown as RequestHandler);
 
     /**
      * @httpUpdateUser used to update an existing user
@@ -36,7 +36,7 @@ export class UserController {
      * PUT /users/:userId
      * ```
      */
-    public httpUpdateUser = asyncHandler(this.userServices.updateUser as unknown as RequestHandler);
+    httpUpdateUser = asyncHandler(this.userServices.updateUser as unknown as RequestHandler);
 
     /**
      * @httpPatchUser used to patch an existing user
@@ -44,7 +44,7 @@ export class UserController {
      * PATCH /users/:userId
      * ```
      */
-    public httpPatchUser = asyncHandler(this.userServices.patchUser as unknown as RequestHandler);
+    httpPatchUser = asyncHandler(this.userServices.patchUser as unknown as RequestHandler);
 
     /**
      * @httpDeleteUser used to delete an existing user
@@ -52,5 +52,5 @@ export class UserController {
      * DELETE /users/:userId
      * ```
      */
-    public httpDeleteUser = asyncHandler(this.userServices.deleteUser as unknown as RequestHandler);
+    httpDeleteUser = asyncHandler(this.userServices.deleteUser as unknown as RequestHandler);
 }

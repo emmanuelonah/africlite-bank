@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { AccountUtil } from './index.util';
 import { AccountModel } from './index.model';
 import { initDto } from '../../utils/init-dto.util';
 import { response } from '../../services/response/index.service';
@@ -14,25 +15,29 @@ import {
 
 export class AccountServices {
     private accountModel = new AccountModel();
+    private accountUtil = new AccountUtil(this.accountModel);
 
-    public createAccount = async (
+    createAccount = async (
         req: Request<never, AccountResponseI, AccountRequestI>,
         res: Response<AccountResponseI>,
         next: NextFunction
     ) => {
-        const { hasErrors, error } = await initDto(CreateAuthorDto, req.body);
-        if (hasErrors) return next(new HttpException(400, error));
+        try {
+            await initDto(CreateAuthorDto, req.body);
 
-        const account = await this.accountModel.findAccountByIban(req.body.iban);
-        if (account) return next(new HttpException(409, 'Account already exist'));
+            const account = await this.accountModel.findAccountByIban(req.body.iban);
+            if (account) throw new HttpException(409, 'Account already exist');
 
-        const createdAccount = await this.accountModel.createAccount(req.body);
-        return res
-            .status(200)
-            .json(response(Object.assign(createdAccount, { id: createdAccount.id })));
+            const createdAccount = await this.accountModel.createAccount(req.body);
+            return res
+                .status(200)
+                .json(response(Object.assign(createdAccount, { id: createdAccount.id })));
+        } catch (error) {
+            return next(new HttpException(error.statusCode, error.message));
+        }
     };
 
-    public getAccounts = async (
+    getAccounts = async (
         req: Request<never, AccountResponseI[], never, AccountQueryParams>,
         res: Response<AccountResponseI[]>,
         _next: NextFunction
@@ -47,64 +52,42 @@ export class AccountServices {
         return res.status(200).json(response(accounts) as unknown as AccountResponseI[]);
     };
 
-    public getAccount = async (
+    getAccount = async (
         req: Request<AccountIdParam, AccountResponseI, never, AccountQueryParams>,
         res: Response<AccountResponseI>,
         next: NextFunction
     ) => {
-        const { accountId } = req.params;
-        if (!accountId) return next(new HttpException(400, 'Missing user ID'));
+        try {
+            const { accountId } = req.params;
+            if (!accountId) throw new HttpException(400, 'Missing user ID');
 
-        let account;
-
-        if (req.query.include?.includes?.('userRef')) {
-            account = await this.accountModel
-                .findAccountById(accountId)
-                .populate('User')
-                .lean()
-                .exec();
-        } else {
-            account = await this.accountModel.findAccountById(accountId).lean().exec();
+            const account = await this.accountUtil.getAccount(accountId, req);
+            return res.status(200).json(response(account) as AccountResponseI);
+        } catch (error) {
+            return next(new HttpException(error.statusCode, error.message));
         }
-
-        if (!account) {
-            return next(new HttpException(404, `Account with ID ${accountId} is not found`));
-        }
-        return res.status(200).json(response(account) as AccountResponseI);
     };
 
-    public updateAccount = async (
+    updateAccount = async (
         req: Request<AccountIdParam, AccountResponseI, AccountRequestI, AccountQueryParams>,
         res: Response<AccountResponseI>,
         next: NextFunction
     ) => {
-        const { hasErrors, error } = await initDto(UpdateAccountDto, req.body);
-        if (hasErrors) return next(new HttpException(400, error));
+        try {
+            await initDto(UpdateAccountDto, req.body);
 
-        const { accountId } = req.params;
-        if (!accountId) return next(new HttpException(400, 'Missing account ID'));
+            const { accountId } = req.params;
+            if (!accountId) throw new HttpException(400, 'Missing account ID');
 
-        let account;
-
-        if (req.query.include?.includes?.('userRef')) {
-            account = await this.accountModel
-                .findAccountById(accountId)
-                .populate('User')
-                .lean()
-                .exec();
-        } else {
-            account = await this.accountModel.findAccountById(accountId).lean().exec();
+            const account = await this.accountUtil.getAccount(accountId, req);
+            await this.accountModel.updateAccountById(accountId, req.body);
+            return res.status(200).json(response(account) as AccountResponseI);
+        } catch (error) {
+            return next(new HttpException(error.statusCode, error.message));
         }
-
-        if (!account) {
-            return next(new HttpException(404, `Account with ID ${accountId} is not found`));
-        }
-
-        await this.accountModel.updateAccountById(accountId, req.body);
-        return res.status(200).json(response(account) as AccountResponseI);
     };
 
-    public patchAccount = async (
+    patchAccount = async (
         req: Request<
             AccountIdParam,
             AccountResponseI,
@@ -114,56 +97,34 @@ export class AccountServices {
         res: Response<AccountResponseI>,
         next: NextFunction
     ) => {
-        const { hasErrors, error } = await initDto(PatchAccountDto, req.body);
-        if (hasErrors) return next(new HttpException(400, error));
+        try {
+            await initDto(PatchAccountDto, req.body);
 
-        const { accountId } = req.params;
-        if (!accountId) return next(new HttpException(400, 'Missing account ID'));
+            const { accountId } = req.params;
+            if (!accountId) throw new HttpException(400, 'Missing account ID');
 
-        let account;
-
-        if (req.query.include?.includes?.('userRef')) {
-            account = await this.accountModel
-                .findAccountById(accountId)
-                .populate('User')
-                .lean()
-                .exec();
-        } else {
-            account = await this.accountModel.findAccountById(accountId).lean().exec();
+            const account = await this.accountUtil.getAccount(accountId, req);
+            await this.accountModel.patchAccountById(accountId, req.body);
+            return res.status(200).json(response(account) as AccountResponseI);
+        } catch (error) {
+            return next(new HttpException(error.statusCode, error.message));
         }
-
-        if (!account)
-            return next(new HttpException(404, `Account with ID ${accountId} is not found`));
-
-        await this.accountModel.patchAccountById(accountId, req.body);
-        return res.status(200).json(response(account) as AccountResponseI);
     };
 
-    public deleteAccount = async (
+    deleteAccount = async (
         req: Request<AccountIdParam, AccountResponseI, never, AccountQueryParams>,
         res: Response<AccountResponseI>,
         next: NextFunction
     ) => {
-        const { accountId } = req.params;
-        if (!accountId) return next(new HttpException(400, 'Missing account ID'));
+        try {
+            const { accountId } = req.params;
+            if (!accountId) throw new HttpException(400, 'Missing account ID');
 
-        let account;
-
-        if (req.query.include?.includes?.('userRef')) {
-            account = await this.accountModel
-                .findAccountById(accountId)
-                .populate('User')
-                .lean()
-                .exec();
-        } else {
-            account = await this.accountModel.findAccountById(accountId).lean().exec();
+            const account = await this.accountUtil.getAccount(accountId, req);
+            await this.accountModel.deleteAccountById(accountId);
+            return res.status(200).json(response(account) as AccountResponseI);
+        } catch (error) {
+            return next(new HttpException(error.statusCode, error.message));
         }
-
-        if (!account) {
-            return next(new HttpException(404, `Account with ID ${accountId} is not found`));
-        }
-
-        await this.accountModel.deleteAccountById(accountId);
-        return res.status(200).json(response(account) as AccountResponseI);
     };
 }

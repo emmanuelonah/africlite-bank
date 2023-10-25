@@ -57,7 +57,7 @@ export class UserServices {
     ) => {
         try {
             const { userId } = req.params;
-            if (!userId) throw new HttpException(400, 'Missing user ID');
+            this.userUtil.handlerMissingUserIdParam(userId);
 
             const user = await this.userUtil.getUser(userId, req);
 
@@ -76,8 +76,7 @@ export class UserServices {
             await initDto(UpdateUserDto, req.body);
 
             const { userId } = req.params;
-
-            if (!userId) throw new HttpException(400, 'Missing user ID');
+            this.userUtil.handlerMissingUserIdParam(userId);
 
             const user = await this.userUtil.getUser(userId, req);
 
@@ -97,7 +96,7 @@ export class UserServices {
             await initDto(PatchUserDto, req.body);
 
             const { userId } = req.params;
-            if (!userId) throw new HttpException(400, 'Missing user ID');
+            this.userUtil.handlerMissingUserIdParam(userId);
 
             const user = await this.userUtil.getUser(userId, req);
 
@@ -115,7 +114,7 @@ export class UserServices {
     ) => {
         try {
             const { userId } = req.params;
-            if (!userId) throw new HttpException(400, 'Missing user ID');
+            this.userUtil.handlerMissingUserIdParam(userId);
 
             const user = await this.userUtil.getUser(userId, req);
 

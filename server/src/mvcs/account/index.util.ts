@@ -16,6 +16,10 @@ export class AccountUtil {
         this.accountModel = accountModel;
     }
 
+    handleMissingAccountIdParam(accountId?: string) {
+        if (!accountId) throw new HttpException(400, 'Missing user ID');
+    }
+
     async getAccount(
         accountId: string,
         req: Request<

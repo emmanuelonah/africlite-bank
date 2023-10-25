@@ -77,7 +77,7 @@ export class AccountServices {
             await initDto(UpdateAccountDto, req.body);
 
             const { accountId } = req.params;
-            if (!accountId) throw new HttpException(400, 'Missing account ID');
+            this.accountUtil.handleMissingAccountIdParam(accountId);
 
             const account = await this.accountUtil.getAccount(accountId, req);
             await this.accountModel.updateAccountById(accountId, req.body);
@@ -101,7 +101,7 @@ export class AccountServices {
             await initDto(PatchAccountDto, req.body);
 
             const { accountId } = req.params;
-            if (!accountId) throw new HttpException(400, 'Missing account ID');
+            this.accountUtil.handleMissingAccountIdParam(accountId);
 
             const account = await this.accountUtil.getAccount(accountId, req);
             await this.accountModel.patchAccountById(accountId, req.body);
@@ -118,7 +118,7 @@ export class AccountServices {
     ) => {
         try {
             const { accountId } = req.params;
-            if (!accountId) throw new HttpException(400, 'Missing account ID');
+            this.accountUtil.handleMissingAccountIdParam(accountId);
 
             const account = await this.accountUtil.getAccount(accountId, req);
             await this.accountModel.deleteAccountById(accountId);

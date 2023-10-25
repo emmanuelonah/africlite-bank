@@ -11,6 +11,10 @@ export class UserUtil {
         this.userModel = userModel;
     }
 
+    handlerMissingUserIdParam(userId?: string) {
+        if (!userId) throw new HttpException(400, 'Missing user ID');
+    }
+
     async getUser(
         userId: string,
         req: Request<UserIdParam, UserResponseI, Partial<UserRequestI>, UserQueryParams>

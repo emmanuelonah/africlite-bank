@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import { UserModel } from './index.model';
 import { HttpException } from '../../services/http-exception/index.service';
@@ -13,6 +13,22 @@ export class UserUtil {
 
     handlerMissingUserIdParam(userId?: string) {
         if (!userId) throw new HttpException(400, 'Missing user ID');
+    }
+
+    async getUsers(
+        req: Request<never, UserResponseI[], never, UserQueryParams>,
+        _res: Response<UserResponseI[]>,
+        _next: NextFunction
+    ) {
+        let users;
+
+        if (req.query.include?.includes?.('accountRef')) {
+            users = await this.userModel.findUsers().populate('Account').lean().exec();
+        } else {
+            users = await this.userModel.findUsers().lean().exec();
+        }
+
+        return users;
     }
 
     async getUser(

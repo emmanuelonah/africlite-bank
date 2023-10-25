@@ -40,15 +40,9 @@ export class AccountServices {
     getAccounts = async (
         req: Request<never, AccountResponseI[], never, AccountQueryParams>,
         res: Response<AccountResponseI[]>,
-        _next: NextFunction
+        next: NextFunction
     ) => {
-        let accounts;
-
-        if (req.query.include?.includes?.('userRef')) {
-            accounts = await this.accountModel.findAccounts().populate('User').lean().exec();
-        } else {
-            accounts = await this.accountModel.findAccounts().lean().exec();
-        }
+        const accounts = await this.accountUtil.getAccounts(req, res, next);
         return res.status(200).json(response(accounts) as unknown as AccountResponseI[]);
     };
 
@@ -59,8 +53,7 @@ export class AccountServices {
     ) => {
         try {
             const { accountId } = req.params;
-            if (!accountId) throw new HttpException(400, 'Missing user ID');
-
+            this.accountUtil.handleMissingAccountIdParam(accountId);
             const account = await this.accountUtil.getAccount(accountId, req);
             return res.status(200).json(response(account) as AccountResponseI);
         } catch (error) {
@@ -75,10 +68,8 @@ export class AccountServices {
     ) => {
         try {
             await initDto(UpdateAccountDto, req.body);
-
             const { accountId } = req.params;
             this.accountUtil.handleMissingAccountIdParam(accountId);
-
             const account = await this.accountUtil.getAccount(accountId, req);
             await this.accountModel.updateAccountById(accountId, req.body);
             return res.status(200).json(response(account) as AccountResponseI);
@@ -102,7 +93,6 @@ export class AccountServices {
 
             const { accountId } = req.params;
             this.accountUtil.handleMissingAccountIdParam(accountId);
-
             const account = await this.accountUtil.getAccount(accountId, req);
             await this.accountModel.patchAccountById(accountId, req.body);
             return res.status(200).json(response(account) as AccountResponseI);
@@ -119,7 +109,6 @@ export class AccountServices {
         try {
             const { accountId } = req.params;
             this.accountUtil.handleMissingAccountIdParam(accountId);
-
             const account = await this.accountUtil.getAccount(accountId, req);
             await this.accountModel.deleteAccountById(accountId);
             return res.status(200).json(response(account) as AccountResponseI);

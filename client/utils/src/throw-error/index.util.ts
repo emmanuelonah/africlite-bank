@@ -1,4 +1,9 @@
-import { ThrowErrorArgTypes } from 'ThrowErrorTypes';
+export type ThrowErrorArgTypes<Option = Record<string, unknown>> = {
+    name: string;
+    message: string;
+    callee?: Function;
+    option?: Option;
+};
 
 export function throwError({ name, message, option, callee }: ThrowErrorArgTypes) {
     const error = new Error();

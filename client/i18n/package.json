@@ -1,67 +1,72 @@
 {
-  "name": "@afb/i18n",
-  "version": "1.0.0",
-  "description": "AfricliteBank Client i18n package",
-  "author": "emmanuelonah",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/i18n.esm.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "engines": {
-    "node": ">=10"
-  },
-  "scripts": {
-    "in": "yarn install",
-    "l": "yarn link",
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "npx eslint . --ext .ts",
-    "format": "prettier --write './src/**/*.ts'",
-    "pre:commit": "yarn run lint",
-    "pre:push": "yarn run test --watchAll=false && yarn run build",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
-  },
-  "peerDependencies": {},
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "size-limit": [
-    {
-      "path": "dist/i18n.cjs.production.min.js",
-      "limit": "10 KB"
+    "name": "@afb/i18n",
+    "version": "1.0.0",
+    "description": "AfricliteBank Client i18n package",
+    "author": "emmanuelonah",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "module": "dist/i18n.esm.js",
+    "typings": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "src"
+    ],
+    "engines": {
+        "node": ">=10"
     },
-    {
-      "path": "dist/i18n.esm.js",
-      "limit": "10 KB"
+    "scripts": {
+        "in": "yarn install",
+        "l": "yarn link",
+        "start": "tsdx watch",
+        "build": "tsdx build",
+        "test": "tsdx test --watch",
+        "test:cv": "yarn run test --coverage --watchAll=false",
+        "lint": "npx eslint . --ext .ts",
+        "format": "prettier --write './src/**/*.ts'",
+        "pre:commit": "yarn run lint",
+        "pre:push": "yarn run test --watchAll=false && yarn run build",
+        "prepare": "tsdx build",
+        "size": "size-limit",
+        "analyze": "size-limit --why"
+    },
+    "peerDependencies": {},
+    "husky": {
+        "hooks": {
+            "pre-commit": "tsdx lint"
+        }
+    },
+    "size-limit": [
+        {
+            "path": "dist/i18n.cjs.production.min.js",
+            "limit": "10 KB"
+        },
+        {
+            "path": "dist/i18n.esm.js",
+            "limit": "10 KB"
+        }
+    ],
+    "devDependencies": {
+        "@size-limit/preset-small-lib": "^10.0.1",
+        "@types/jest": "^29.5.6",
+        "@typescript-eslint/eslint-plugin": "^6.9.0",
+        "@typescript-eslint/parser": "^6.9.0",
+        "eslint": "^8.52.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-config-standard-with-typescript": "^39.1.1",
+        "eslint-plugin-import": "^2.25.2",
+        "eslint-plugin-jest": "^27.6.0",
+        "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+        "eslint-plugin-prettier": "^5.0.1",
+        "eslint-plugin-promise": "^6.0.0",
+        "husky": "^8.0.3",
+        "prettier": "^3.0.3",
+        "size-limit": "^10.0.1",
+        "tsdx": "^0.14.1",
+        "tslib": "^2.6.2",
+        "typescript": "*"
+    },
+    "dependencies": {
+        "i18next": "^23.6.0",
+        "react-i18next": "^13.3.1"
     }
-  ],
-  "devDependencies": {
-    "@size-limit/preset-small-lib": "^10.0.1",
-    "@types/jest": "^29.5.6",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-config-standard-with-typescript": "^39.1.1",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-jest": "^27.6.0",
-    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
-    "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-promise": "^6.0.0",
-    "husky": "^8.0.3",
-    "prettier": "^3.0.3",
-    "size-limit": "^10.0.1",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.6.2",
-    "typescript": "*"
-  }
 }

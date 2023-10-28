@@ -4,4 +4,6 @@
 
 ## Architecture
 
+`MVC`
+
 ## Scripts

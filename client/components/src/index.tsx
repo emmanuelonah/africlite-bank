@@ -1,9 +1,5 @@
-import * as React from 'react'
+import React from 'react';
 
-interface Props {
-  text: string
-}
-
-export const ExampleComponent = ({ text }: Props) => {
-  return <div>Example Component: {text}</div>
+export function ExampleComponent() {
+  return <p>Welcome to AfricLiteBank components Packages</p>;
 }

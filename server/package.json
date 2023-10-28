@@ -1,8 +1,13 @@
 {
     "name": "@afb/server",
     "version": "1.0.0",
+    "description": "AfricliteBank server project",
+    "author": "emmanuelonah",
     "main": "index.js",
     "license": "MIT",
+    "engines": {
+        "node": ">=10"
+    },
     "scripts": {
         "i": "yarn",
         "start": "yarn run build && node ./dist/index.js",
@@ -13,9 +18,9 @@
         "prod:reload": "pm2 reload index",
         "test": "jest --config=jest.config.js --detectOpenHandles --watch",
         "test:watch": "yarn run test --watch",
+        "test:cv": "yarn run test --coverage --watchAll=false",
         "clean": "rimraf ./dist",
         "lint": "npx eslint . --ext .ts",
-        "test:cv": "yarn run test --coverage --watchAll=false",
         "format": "prettier --write './src/**/*.ts'",
         "pre:commit": "yarn run lint",
         "pre:push": "yarn run test --watchAll=false && yarn run build"

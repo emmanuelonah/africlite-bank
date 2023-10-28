@@ -1,15 +1,24 @@
 {
   "name": "@afb/client",
+  "author": "emmanuelonah",
   "private": true,
   "workspaces": [
     "client/*"
   ],
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
-    "in": "yarn install",
+    "l":"yarn --cwd ./utils l && yarn --cwd ./services l && yarn --cwd ./i18n l && yarn --cwd ./components l",
+    "in:client": "yarn install",
+    "in": "yarn run l && yarn --cwd ./utils in && yarn --cwd ./services in && yarn --cwd ./i18n in && yarn --cwd ./components in && yarn --cwd ./customer in",
+    "build": "yarn --cwd ./customer link:pkgs && yarn --cwd ./utils build && yarn --cwd ./services build && yarn --cwd ./i18n build && yarn --cwd ./components build && yarn --cwd ./customer build",
+    "test": "yarn run l && yarn --cwd ./utils test && yarn --cwd ./services test && yarn --cwd ./i18n test && yarn --cwd ./components test && yarn --cwd ./customer test",
     "setup": "yarn config set workspaces-experimental true",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test:cv": ""
+    "pre:commit": "yarn --cwd ./utils pre:commit && yarn --cwd ./services pre:commit && yarn --cwd ./i18n pre:commit && yarn --cwd ./components pre:commit && yarn --cwd ./customer pre:commit",
+    "pre:push": "yarn --cwd ./utils pre:push && yarn --cwd ./services pre:push && yarn --cwd ./i18n pre:push && yarn --cwd ./components pre:push && yarn --cwd ./customer pre:push"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.23.2",

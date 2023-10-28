@@ -7,3 +7,11 @@ This folder contains Frontend code
 ## [🔗 Services package 🤖](./services/README.md)
 
 ## [🔗 Utils package ⛽️](./services/README.md)
+
+## [🔗 i18n package ⛽️](./i18n/README.md)
+
+## [🔗 DesignSystem package ⛽️](./design-system/README.md)
+
+## Architecture
+
+`MVP`

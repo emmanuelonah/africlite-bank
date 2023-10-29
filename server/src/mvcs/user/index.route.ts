@@ -5,7 +5,6 @@ import { UserController } from './index.controller';
 const userRouter = Router();
 const userController = new UserController();
 
-userRouter.route('/').post(userController.httpCreateUser);
 /**
  * 🚨@TODO Add role authorization for `/` so its accessible by admins only
  */

@@ -21,10 +21,15 @@ export class UserServices {
     ) => {
         try {
             await initDto(CreateUserDto, req.body);
+
             const user = await this.userModel.findUserByEmail(req.body.email);
+
             if (user) throw new HttpException(409, 'User already exists');
+
             const createdUser = await this.userModel.createUser(req.body);
+
             delete req.body.password;
+
             return res.status(200).json(response(Object.assign(req.body, { id: createdUser.id })));
         } catch (error) {
             return next(new HttpException(error.statusCode, error.message));
@@ -37,6 +42,7 @@ export class UserServices {
         next: NextFunction
     ) => {
         const users = await this.userUtil.getUsers(req, res, next);
+
         return res.status(200).json(response(users) as unknown as UserResponseI[]);
     };
 
@@ -47,8 +53,11 @@ export class UserServices {
     ) => {
         try {
             const { userId } = req.params;
+
             this.userUtil.handlerMissingUserIdParam(userId);
+
             const user = await this.userUtil.getUser(userId, req);
+
             return res.status(200).json(response(user) as UserResponseI);
         } catch (error) {
             return next(new HttpException(error.statusCode, error.message));
@@ -62,10 +71,15 @@ export class UserServices {
     ) => {
         try {
             await initDto(UpdateUserDto, req.body);
+
             const { userId } = req.params;
+
             this.userUtil.handlerMissingUserIdParam(userId);
+
             const user = await this.userUtil.getUser(userId, req);
+
             await this.userModel.updateUserById(userId, req.body);
+
             return res.status(200).json(response(user) as UserResponseI);
         } catch (error) {
             return next(new HttpException(error.statusCode, error.message));
@@ -79,10 +93,15 @@ export class UserServices {
     ) => {
         try {
             await initDto(PatchUserDto, req.body);
+
             const { userId } = req.params;
+
             this.userUtil.handlerMissingUserIdParam(userId);
+
             const user = await this.userUtil.getUser(userId, req);
+
             await this.userModel.patchUserById(userId, req.body);
+
             return res.status(200).json(response(user) as UserResponseI);
         } catch (error) {
             return next(new HttpException(error.statusCode, error.message));
@@ -96,9 +115,13 @@ export class UserServices {
     ) => {
         try {
             const { userId } = req.params;
+
             this.userUtil.handlerMissingUserIdParam(userId);
+
             const user = await this.userUtil.getUser(userId, req);
+
             await this.userModel.deleteUserById(userId);
+
             const accountModel = new AccountModel();
             const accountToDelete = await accountModel
                 .findAccountByMultipleQueries({
@@ -106,7 +129,9 @@ export class UserServices {
                 })
                 .lean()
                 .exec();
+
             await accountModel.deleteAccountById(accountToDelete?.id);
+
             return res.status(200).json(response(user) as UserResponseI);
         } catch (error) {
             return next(new HttpException(error.statusCode, error.message));

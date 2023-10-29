@@ -75,5 +75,5 @@ export type UserQueryParams = {
      *  /users?include=["accountRef"]
      * ```
      */
-    include?: Array<string>; // e.g ?include=["accountRef"]
+    include?: string; // e.g ?'include=["accountRef"]'
 };

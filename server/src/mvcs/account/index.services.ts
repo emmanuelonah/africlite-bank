@@ -26,9 +26,11 @@ export class AccountServices {
             await initDto(CreateAuthorDto, req.body);
 
             const account = await this.accountModel.findAccountByIban(req.body.iban);
+
             if (account) throw new HttpException(409, 'Account already exist');
 
             const createdAccount = await this.accountModel.createAccount(req.body);
+
             return res
                 .status(200)
                 .json(response(Object.assign(createdAccount, { id: createdAccount.id })));
@@ -53,8 +55,11 @@ export class AccountServices {
     ) => {
         try {
             const { accountId } = req.params;
+
             this.accountUtil.handleMissingAccountIdParam(accountId);
+
             const account = await this.accountUtil.getAccount(accountId, req);
+
             return res.status(200).json(response(account) as AccountResponseI);
         } catch (error) {
             return next(new HttpException(error.statusCode, error.message));
@@ -68,10 +73,15 @@ export class AccountServices {
     ) => {
         try {
             await initDto(UpdateAccountDto, req.body);
+
             const { accountId } = req.params;
+
             this.accountUtil.handleMissingAccountIdParam(accountId);
+
             const account = await this.accountUtil.getAccount(accountId, req);
+
             await this.accountModel.updateAccountById(accountId, req.body);
+
             return res.status(200).json(response(account) as AccountResponseI);
         } catch (error) {
             return next(new HttpException(error.statusCode, error.message));
@@ -92,9 +102,13 @@ export class AccountServices {
             await initDto(PatchAccountDto, req.body);
 
             const { accountId } = req.params;
+
             this.accountUtil.handleMissingAccountIdParam(accountId);
+
             const account = await this.accountUtil.getAccount(accountId, req);
+
             await this.accountModel.patchAccountById(accountId, req.body);
+
             return res.status(200).json(response(account) as AccountResponseI);
         } catch (error) {
             return next(new HttpException(error.statusCode, error.message));
@@ -108,9 +122,13 @@ export class AccountServices {
     ) => {
         try {
             const { accountId } = req.params;
+
             this.accountUtil.handleMissingAccountIdParam(accountId);
+
             const account = await this.accountUtil.getAccount(accountId, req);
+
             await this.accountModel.deleteAccountById(accountId);
+
             return res.status(200).json(response(account) as AccountResponseI);
         } catch (error) {
             return next(new HttpException(error.statusCode, error.message));

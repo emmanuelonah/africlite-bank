@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { UserModel } from './index.model';
+import { Query } from '../../services/query/index.service';
 import { HttpException } from '../../services/http-exception/index.service';
 import { UserRequestI, UserResponseI, UserQueryParams, UserIdParam } from './index.types';
 
@@ -20,9 +21,12 @@ export class UserUtil {
         _res: Response<UserResponseI[]>,
         _next: NextFunction
     ) {
+        const populateAccount = Query.getRawQueryValue<Array<string>>(
+            req.query.include!
+        )?.includes?.('accountRef');
         let users;
 
-        if (req.query.include?.includes?.('accountRef')) {
+        if (populateAccount) {
             users = await this.userModel.findUsers().populate('Account').lean().exec();
         } else {
             users = await this.userModel.findUsers().lean().exec();
@@ -35,7 +39,9 @@ export class UserUtil {
         userId: string,
         req: Request<UserIdParam, UserResponseI, Partial<UserRequestI>, UserQueryParams>
     ) {
-        const populateAccount = req.query.include?.includes?.('accountRef');
+        const populateAccount = Query.getRawQueryValue<Array<string>>(
+            req.query.include!
+        )?.includes?.('accountRef');
         let user;
 
         if (populateAccount) {

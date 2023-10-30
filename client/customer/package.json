@@ -25,6 +25,8 @@
         "@afb/i18n": "1.0.0"
     },
     "dependencies": {
+        "@optimizely/react-sdk": "^2.9.2",
+        "@radix-ui/primitive": "^1.0.1",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^13.0.0",
         "@testing-library/user-event": "^13.2.1",
@@ -35,7 +37,11 @@
         "prettierrc": "^0.0.0-5",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-helmet": "^6.1.0",
+        "react-router-dom": "^6.17.0",
         "react-scripts": "5.0.1",
+        "reactour": "^1.19.2",
+        "styled-components": "^6.1.0",
         "typescript": "*",
         "web-vitals": "^2.1.0"
     },

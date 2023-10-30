@@ -1,4 +1,10 @@
-# AfricLite Bank
+<div align="center">
+  <a href="https://github.com/emmanuelonah/africlite-bank">
+    <img src="./client/customer/public/logo512.png" alt="AfricLite Bank logo" width="300" />
+  </a>
+</div>
+
+<h1 align="center">AfricLite Bank</h1>
 
 ## Description
 

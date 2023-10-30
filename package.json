@@ -8,7 +8,7 @@
   "scripts": {
     "in": "yarn install",
     "in:all": "yarn run in && yarn --cwd ./client in && yarn --cwd ./server/ in",
-    "dev": "yarn --cwd ./client build && yarn --cwd ./server/ dev && yarn --cwd ./client/customer dev",
+    "dev": "yarn --cwd ./client build && yarn --cwd ./server/ dev",
     "build": "yarn --cwd ./server/ build && yarn --cwd ./client build",
     "test": "yarn --cwd ./server/ test && yarn --cwd ./client test",
     "pre:commit": "yarn --cwd ./server/ pre:commit && yarn --cwd ./client pre:commit",

@@ -6,11 +6,17 @@
 
 <h1 align="center">AfricLite Bank Server</h1>
 
+## Description
+
+This folder contains the Backend code:
+
 ## Scripts
+
+## Infrastructures
 
 ## Technologies used
 
-## Architecture used(MVC)
+## Architecture used(`MVC`)
 
 ## Testing Architecture
 

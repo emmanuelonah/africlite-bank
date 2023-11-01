@@ -1,17 +1,33 @@
-# Description
+<div align="center">
+  <a href="https://github.com/emmanuelonah/africlite-bank">
+    <img src="./customer/public/logo512.png" alt="AfricLite Bank logo" width="300" />
+  </a>
+</div>
 
-This folder contains Frontend code
+<h1 align="center">AfricLite Bank Client</h1>
 
-## [🔗 Components package 🎨](./components/README.md)
+## Description
 
-## [🔗 Services package 🤖](./services/README.md)
+This folder contains the Frontend packages:
 
-## [🔗 Utils package ⛽️](./services/README.md)
+### [🔗 Components package 📦](./components/README.md)
 
-## [🔗 i18n package ⛽️](./i18n/README.md)
+### [🔗 Services package 📦](./services/README.md)
 
-## [🔗 DesignSystem package ⛽️](./design-system/README.md)
+### [🔗 Utils package 📦](./services/README.md)
 
-## Architecture
+### [🔗 i18n package 📦](./i18n/README.md)
 
-`MVP`
+### [🔗 DesignSystem package 📦](./design-system/README.md)
+
+## Scripts
+
+## Infrastructures
+
+## Technologies used
+
+## Architecture used(`MVP`)
+
+## Testing Architecture
+
+## Code convention

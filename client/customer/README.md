@@ -1,17 +1,6 @@
-<div align="center">
-  <a href="https://github.com/emmanuelonah/africlite-bank">
-    <img src="./public//logo512.png" alt="AfricLite Bank logo" width="300" />
-  </a>
-</div>
-
-<h1 align="center">AfricLite Bank Client</h1>
+# Customer
 
 ## Scripts
-
-This project uses yarn by default as you can see from the "yarn.lock file", and we recommend it remain so to avoid "multiple lock-files"
-
-**Ensure you are using node version latest**
-If you have nvm, run `nvm use` command to select node v18 otherwise make sure are using node >=v10:
 
 ### To start app for development
 
@@ -44,11 +33,3 @@ Your app is ready to be deployed!
 ```base
 yarn build
 ```
-
-## Technologies used
-
-## Architecture used(MVP)
-
-## Testing Architecture
-
-## Code convention

@@ -16,7 +16,7 @@ This is a **pet** project that implements an MVP features of a digital bank in [
 
 ## Getting started
 
-This project uses yarn by default as you can see from the "yarn.lock files", and we recommend it remain so as to avoid "multiple lock-files"
+This project uses yarn by default as you can see from the "yarn.lock files", and we recommend it remain so, as to avoid different types of `lock files`.
 
 **Ensure you are using node version latest**
 If you have nvm, run `nvm use` command to select node v18 otherwise make sure are using node >=v10:

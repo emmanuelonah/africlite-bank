@@ -1,0 +1,8 @@
+{
+    "Wizard": {
+        "next": "Next",
+        "back": "Back",
+        "skip": "Skip",
+        "asyncNext": "Next"
+    }
+}

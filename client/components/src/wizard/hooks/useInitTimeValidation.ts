@@ -23,7 +23,7 @@ export function useInitTimeValidation(arg: UseValidationArgType) {
     const onValidate = useCallback(() => {
         const { rawDestinations, processedDestinations, hasSteps } = arg;
 
-        if (hasSteps) {
+        if (!hasSteps) {
             throwError({
                 name: 'WizardStepsError',
                 message: `[EMPTY_STEPS]: steps can't be an empty}`,

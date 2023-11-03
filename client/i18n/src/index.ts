@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 
 export type Resources = {
     [langCode: string]: {
-        translation: Record<string, string>;
+        translation: JSON;
     };
 };
 

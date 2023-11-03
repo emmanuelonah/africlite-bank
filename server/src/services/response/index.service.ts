@@ -3,6 +3,6 @@ export interface ClientResponse<DataType> {
     data: DataType;
 }
 
-export function response<D = Record<string, any>>(data: D) {
+export function response<D = Record<string, unknown>>(data: D) {
     return { success: true, data };
 }

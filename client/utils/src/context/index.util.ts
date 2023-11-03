@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { throwError } from '../throw-error/index.util';
+import { throwError, __DEV__, __TEST__ } from '..';
 
 export function createContext<ContextType>(displayName: string) {
     const Context = React.createContext<ContextType>(null!);
-    Context.displayName = displayName;
+    if (__DEV__ || __TEST__) Context.displayName = displayName;
 
     function useContext() {
         const context = React.useContext(Context);

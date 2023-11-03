@@ -2,7 +2,7 @@ export class HttpException extends Error {
     code: number;
     success: boolean;
     statusCode: number;
-    errors: Record<string, any>;
+    errors: Record<string, unknown>;
     keyValue: Record<string, string | number>;
 
     constructor(statusCode: number, message: string) {

@@ -11,7 +11,7 @@
         "in": "yarn install",
         "link:pkgs": "yarn --cwd ../ l &&  yarn link @afb/components && yarn link @afb/utils && yarn link @afb/services && yarn link @afb/i18n",
         "build:pkgs": "yarn --cwd ../components build && yarn --cwd ../utils build && yarn --cwd ../services build && yarn --cwd ../i18n build",
-        "dev": "yarn run link:pkgs && yarn run build:pkgs && react-scripts start",
+        "dev": "yarn run build:pkgs && yarn run link:pkgs && yarn run build:pkgs && react-scripts start",
         "build": "yarn run build:pkgs && BUILD_PATH=../../server/builds/client react-scripts build",
         "test": "react-scripts test",
         "lint": "npx eslint . --ext .ts --ext .tsx",

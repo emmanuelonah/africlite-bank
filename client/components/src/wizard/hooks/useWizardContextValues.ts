@@ -70,16 +70,18 @@ function useWizardContextValues<Data = Record<string, unknown>>(args: UseWizardC
 
     const isDataValid = true;
 
+    const stepsIndexSize = processedSteps.length - 1;
+
     const disableCurrentStepNext = useMemo(() => !isDataValid, [isDataValid]);
 
     const hasBack = useMemo(() => currentStepIndex > MIN_STEP_INDEX, [currentStepIndex]);
 
-    const hasNext = useMemo(
-        () => currentStepIndex !== processedSteps.length - 1,
-        [currentStepIndex, processedSteps.length]
-    );
+    const hasNext = useMemo(() => currentStepIndex !== stepsIndexSize, [currentStepIndex, stepsIndexSize]);
 
-    const hasSubmit = useMemo(() => !!onSubmit, [onSubmit]);
+    const isSubmitPage = useMemo(
+        () => !!onSubmit && currentStepIndex === stepsIndexSize,
+        [currentStepIndex, onSubmit, stepsIndexSize]
+    );
 
     const onBack = useCallback(() => {
         if (hasBack) setCurrentStepIndex((prev) => --prev);
@@ -106,7 +108,7 @@ function useWizardContextValues<Data = Record<string, unknown>>(args: UseWizardC
             disableCurrentStepNext,
             hasBack,
             hasNext,
-            hasSubmit,
+            isSubmitPage,
             onBack,
             onNext,
             data,
@@ -115,7 +117,7 @@ function useWizardContextValues<Data = Record<string, unknown>>(args: UseWizardC
             onSubmit: onSubmitHandler,
             rawStep: steps,
         }),
-        []
+        [currentStep, data, disableCurrentStepNext, hasBack, hasNext, isOpen, isSubmitPage, onBack, onCloseHandler, onNext, onSubmitHandler, steps, titleId]
     );
 }
 

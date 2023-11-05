@@ -11,13 +11,12 @@ type UseValidationArgType = {
 };
 
 /**
- * @useValidation we run an init-time validation on the hook variable
- * instances that never changes during a render-lifecycle. So if the
- * validation doesn't pass, then the Wizard infrastructure
- * breaks(everything breaks) because, the success of this init-time
- * validation is paramount to the effective behavior of the Wizard
- *
- * @param arg:UseValidationArgType
+ * @useInitTimeValidation performs validation on destinations and steps.
+ * @param {UseValidationArgType} arg - The `arg` parameter is an object
+ * that contains the following properties:
+ *  @hasSteps boolean;
+ *  @rawDestinations Array<string>;
+ *  @processedDestinations Array<string>;
  */
 export function useInitTimeValidation(arg: UseValidationArgType) {
     const onValidate = useCallback(() => {

@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useMemo, useCallback, useState } from 'react';
 
 import { createContext, useBoolean } from '@afb/utils';
 
-import { useAccessibleUrl } from './useAccessibleUrl';
 import { useInitTimeValidation } from './useInitTimeValidation';
-import { WizardPropTypes, ProcessedStepsType, StepChildrenType, ActionType, StepType } from '../types';
+import { ACTION_BEHAVE_AS, ACTION_APPEAR_AS } from '../helpers/action.helper';
+import { WizardPropTypes, ProcessedStepsType, StepChildrenType, ActionType, BehaveAsType, StepType } from '../types';
 
 type LowLevelWizardContextType = object;
 
@@ -18,7 +19,13 @@ const MIN_STEP_INDEX = 0;
 function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: UseLowLevelWizardContextValuesArgType) {
     const { baseUrl, titleId, cancelReturnTo, initialData, steps = {}, abortSignal, onClose, onSubmit } = arg;
 
+    const [data, setData] = useState<Data>(initialData as Data);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [currentStepIndex, setCurrentStepIndex] = useState<number>(MIN_STEP_INDEX);
+    const [isOpen, { toggle }] = useBoolean(true);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const { processedSteps, rawDestinations, processedDestinations, hasSteps } = useMemo(() => {
         const stepsCollection = Object.values(steps);
@@ -57,21 +64,15 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
 
     useInitTimeValidation({ hasSteps, rawDestinations, processedDestinations });
 
-    const [data, setData] = useState<Data>(initialData as Data);
-    const [currentStepIndex, setCurrentStepIndex] = useState<number>(MIN_STEP_INDEX);
-    const [isOpen, { toggle }] = useBoolean(true);
-
     const currentStep = useMemo(() => processedSteps[currentStepIndex], [currentStepIndex, processedSteps]);
 
-    const url = baseUrl.concat(currentStep.url);
+    const globalTitle = titleId ? t(titleId) : undefined;
 
-    useAccessibleUrl(url);
+    const url = baseUrl.concat(currentStep.url);
 
     const isDataValid = true;
 
     const stepsIndexSize = processedSteps.length - 1;
-
-    const disableCurrentStepNext = useMemo(() => !isDataValid, [isDataValid]);
 
     const hasBack = useMemo(() => currentStepIndex > MIN_STEP_INDEX, [currentStepIndex]);
 
@@ -83,12 +84,55 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
     );
 
     const onBack = useCallback(() => {
-        if (hasBack) setCurrentStepIndex((prev) => --prev);
-    }, [hasBack]);
+        if (hasBack) {
+            setCurrentStepIndex((prev) => --prev);
+            navigate(url);
+        }
+    }, [hasBack, navigate, url]);
 
     const onNext = useCallback(() => {
-        if (hasNext) setCurrentStepIndex((prev) => ++prev);
-    }, [hasNext]);
+        if (hasNext) {
+            setCurrentStepIndex((prev) => ++prev);
+            navigate(url);
+        }
+    }, [hasNext, navigate, url]);
+
+    const findAction = useCallback(
+        (behaveAs: BehaveAsType) => {
+            const action = currentStep.actions?.find((ac) => ac.behaveAs === behaveAs);
+            return action;
+        },
+        [currentStep.actions]
+    );
+
+    const asyncNextAction = findAction(ACTION_BEHAVE_AS.ASYNC_NEXT);
+
+    const hasAsyncNext = useMemo(() => asyncNextAction != undefined, [asyncNextAction]);
+
+    const onAsyncNext = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            await asyncNextAction?.onClick?.(data as Record<string, unknown>);
+            setError(null);
+            navigate(url);
+        } catch (error) {
+            setError((error as Error).message);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [asyncNextAction, data, navigate, url]);
+
+    const hasSkip = useMemo(() => {
+        const skipAction = findAction(ACTION_BEHAVE_AS.SKIP);
+        return skipAction != undefined;
+    }, [findAction]);
+
+    const onSkip = useCallback(() => {
+        if (hasSkip) {
+            setCurrentStepIndex((prev) => ++prev);
+            navigate(url);
+        }
+    }, [hasSkip, navigate, url]);
 
     const onCloseHandler = useCallback(() => {
         toggle();
@@ -97,26 +141,80 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
         if (abortSignal) abortSignal.abort();
     }, [abortSignal, cancelReturnTo, data, navigate, onClose, toggle]);
 
-    const onSubmitHandler = useCallback(() => {}, []);
+    const onSubmitHandler = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            await onSubmit?.(data as Record<string, unknown>);
+            setError(null);
+        } catch (error) {
+            setError((error as Error).message);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [data, onSubmit]);
+
+    const actions = useMemo(
+        () => ({
+            [ACTION_BEHAVE_AS.BACK]: {
+                text: t('Wizard.'.concat(ACTION_APPEAR_AS.BACK)),
+                onClick: onBack,
+            },
+            [ACTION_BEHAVE_AS.NEXT]: {
+                text: t('Wizard.'.concat(ACTION_APPEAR_AS.NEXT)),
+                onClick: onNext,
+            },
+            [ACTION_BEHAVE_AS.SKIP]: {
+                text: t('Wizard.'.concat(ACTION_APPEAR_AS.SKIP)),
+                onClick: onSkip,
+            },
+            [ACTION_BEHAVE_AS.ASYNC_NEXT]: {
+                text: t('Wizard.'.concat(ACTION_APPEAR_AS.ASYNC_NEXT)),
+                onClick: onAsyncNext,
+            },
+            [ACTION_BEHAVE_AS.SUBMIT]: {
+                text: t('Wizard.'.concat(ACTION_APPEAR_AS.SUBMIT)),
+                onClick: onSubmitHandler,
+            },
+        }),
+        [onAsyncNext, onBack, onNext, onSkip, onSubmitHandler, t]
+    );
 
     return useMemo(
         () => ({
-            titleId,
+            globalTitle,
             currentStep,
             isOpen,
-            disableCurrentStepNext,
+            isDataValid,
+            isLoading,
+            hasSkip,
             hasBack,
             hasNext,
+            hasAsyncNext,
             isSubmitPage,
-            onBack,
-            onNext,
+            error,
             data,
+            actions,
             setData,
             onClose: onCloseHandler,
-            onSubmit: onSubmitHandler,
             rawStep: steps,
         }),
-        [currentStep, data, disableCurrentStepNext, hasBack, hasNext, isOpen, isSubmitPage, onBack, onCloseHandler, onNext, onSubmitHandler, steps, titleId]
+        [
+            actions,
+            currentStep,
+            data,
+            error,
+            globalTitle,
+            hasAsyncNext,
+            hasBack,
+            hasNext,
+            hasSkip,
+            isDataValid,
+            isLoading,
+            isOpen,
+            isSubmitPage,
+            onCloseHandler,
+            steps,
+        ]
     );
 }
 

@@ -74,29 +74,6 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
 
     const stepsIndexSize = processedSteps.length - 1;
 
-    const hasBack = useMemo(() => currentStepIndex > MIN_STEP_INDEX, [currentStepIndex]);
-
-    const hasNext = useMemo(() => currentStepIndex !== stepsIndexSize, [currentStepIndex, stepsIndexSize]);
-
-    const isSubmitPage = useMemo(
-        () => !!onSubmit && currentStepIndex === stepsIndexSize,
-        [currentStepIndex, onSubmit, stepsIndexSize]
-    );
-
-    const onBack = useCallback(() => {
-        if (hasBack) {
-            setCurrentStepIndex((prev) => --prev);
-            navigate(url);
-        }
-    }, [hasBack, navigate, url]);
-
-    const onNext = useCallback(() => {
-        if (hasNext) {
-            setCurrentStepIndex((prev) => ++prev);
-            navigate(url);
-        }
-    }, [hasNext, navigate, url]);
-
     const findAction = useCallback(
         (behaveAs: BehaveAsType) => {
             const action = currentStep.actions?.find((ac) => ac.behaveAs === behaveAs);
@@ -104,6 +81,33 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
         },
         [currentStep.actions]
     );
+
+    const isSubmitPage = useMemo(
+        () => !!onSubmit && currentStepIndex === stepsIndexSize,
+        [currentStepIndex, onSubmit, stepsIndexSize]
+    );
+
+    const hasBack = useMemo(() => currentStepIndex > MIN_STEP_INDEX, [currentStepIndex]);
+
+    const onBack = useCallback(() => {
+        if (hasBack) {
+            const nextAction = findAction(ACTION_BEHAVE_AS.BACK);
+            nextAction?.onClick?.(data as Record<string, unknown>);
+            setCurrentStepIndex((prev) => --prev);
+            navigate(url);
+        }
+    }, [data, findAction, hasBack, navigate, url]);
+
+    const hasNext = useMemo(() => currentStepIndex !== stepsIndexSize, [currentStepIndex, stepsIndexSize]);
+
+    const onNext = useCallback(() => {
+        if (hasNext) {
+            const nextAction = findAction(ACTION_BEHAVE_AS.NEXT);
+            nextAction?.onClick?.(data as Record<string, unknown>);
+            setCurrentStepIndex((prev) => ++prev);
+            navigate(url);
+        }
+    }, [data, findAction, hasNext, navigate, url]);
 
     const asyncNextAction = findAction(ACTION_BEHAVE_AS.ASYNC_NEXT);
 

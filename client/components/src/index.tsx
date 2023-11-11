@@ -1,5 +1,2 @@
-import React from 'react';
-
-export function ExampleComponent() {
-  return <p>Welcome to AfricLiteBank components Packages</p>;
-}
+export * from './if';
+export * from './wizard';

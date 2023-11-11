@@ -1,12 +1,15 @@
 {
-    "include": ["src", "types"],
+    "include": ["src", "types", "./src/wizard/i18n/en.json"],
     "compilerOptions": {
         "baseUrl": "./src",
         "rootDir": "./src",
         "module": "esnext",
         "lib": ["dom", "esnext"],
-        "importHelpers": true,
+        "composite": true,
         "declaration": true,
+        "declarationMap": true,
+        "incremental": true,
+        "importHelpers": true,
         "sourceMap": true,
         "resolveJsonModule": true,
         "strict": true,
@@ -19,6 +22,9 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "noEmit": true
+        "noEmit": true,
+        "paths": {
+            "@afb/i18n": ["../i18n/src"]
+          }
     }
 }

@@ -45,7 +45,6 @@ To implement the Frontend Wizard pattern, follow these steps:
 Here's an example of rendering Wizard:
 
 ```tsx
-export {};
 const steps = {
     contact: {
         children: [

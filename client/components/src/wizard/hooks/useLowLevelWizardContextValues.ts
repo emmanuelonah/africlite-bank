@@ -2,21 +2,31 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMemo, useCallback, useState } from 'react';
 
-import { createContext, useBoolean } from '@afb/utils';
+import { createContext, useBoolean, HttpException } from '@afb/utils';
 
 import { useInitTimeValidation } from './useInitTimeValidation';
 import { ACTION_BEHAVE_AS, ACTION_APPEAR_AS } from '../helpers/action.helper';
-import { WizardPropTypes, ProcessedStepsType, StepChildrenType, ActionType, BehaveAsType, StepType } from '../types';
+import {
+    WizardPropTypes,
+    ProcessedStepsType,
+    StepChildrenType,
+    ActionType,
+    BehaveAsType,
+    StepType,
+    LowLevelWizardContextType,
+    DefaultDataType,
+} from '../types';
 
-type LowLevelWizardContextType = object;
+type UseLowLevelWizardContextValuesArgType<D> = WizardPropTypes<D>;
 
-type UseLowLevelWizardContextValuesArgType = WizardPropTypes;
-
-const [LowLevelWizardProvider, useLowLevelWizard] = createContext<LowLevelWizardContextType>('LowLevelWizardContext');
+const [LowLevelWizardProvider, useLowLevelWizard] =
+    createContext<LowLevelWizardContextType<DefaultDataType>>('LowLevelWizardContext');
 
 const MIN_STEP_INDEX = 0;
 
-function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: UseLowLevelWizardContextValuesArgType) {
+function useLowLevelWizardContextValues<Data = DefaultDataType>(
+    arg: UseLowLevelWizardContextValuesArgType<Data>
+): LowLevelWizardContextType<Data> {
     const { baseUrl, titleId, cancelReturnTo, initialData, steps = {}, abortSignal, onClose, onSubmit } = arg;
 
     const [data, setData] = useState<Data>(initialData as Data);
@@ -30,11 +40,11 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
     const { processedSteps, rawDestinations, processedDestinations, hasSteps } = useMemo(() => {
         const stepsCollection = Object.values(steps);
         const hasSteps = !!stepsCollection.length;
-        const stepsChildren = [] as Array<StepChildrenType>;
-        const actions = [] as Array<Array<ActionType>>;
+        const stepsChildren = [] as Array<StepChildrenType<Data>>;
+        const actions = [] as Array<Array<ActionType<Data>>>;
         const processedDestinations = [] as Array<string>;
 
-        const addActions = (step: StepType) => {
+        const addActions = (step: StepType<Data>) => {
             step.children.forEach((child) => {
                 if (child.actions) actions.push(child.actions);
             });
@@ -50,7 +60,7 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
             return acc;
         }, []);
 
-        const processedSteps = stepsChildren.flat().reduce((acc: ProcessedStepsType, curr) => {
+        const processedSteps = stepsChildren.flat().reduce((acc: ProcessedStepsType<Data>, curr) => {
             const { belongsTo } = curr;
             const index = steps[belongsTo].children.findIndex((child) => child.id === curr.id);
             const _url = `/${curr.belongsTo}/${index}`;
@@ -66,7 +76,7 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
 
     const currentStep = useMemo(() => processedSteps[currentStepIndex], [currentStepIndex, processedSteps]);
 
-    const globalTitle = titleId ? t(titleId) : undefined;
+    const globalTitle: string | undefined = titleId ? t(titleId) : undefined;
 
     const url = baseUrl.concat(currentStep.url);
 
@@ -92,7 +102,7 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
     const onBack = useCallback(() => {
         if (hasBack) {
             const nextAction = findAction(ACTION_BEHAVE_AS.BACK);
-            nextAction?.onClick?.(data as Record<string, unknown>);
+            nextAction?.onClick?.(data);
             setCurrentStepIndex((prev) => --prev);
             navigate(url);
         }
@@ -103,7 +113,7 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
     const onNext = useCallback(() => {
         if (hasNext) {
             const nextAction = findAction(ACTION_BEHAVE_AS.NEXT);
-            nextAction?.onClick?.(data as Record<string, unknown>);
+            nextAction?.onClick?.(data);
             setCurrentStepIndex((prev) => ++prev);
             navigate(url);
         }
@@ -116,11 +126,11 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
     const onAsyncNext = useCallback(async () => {
         setIsLoading(true);
         try {
-            await asyncNextAction?.onClick?.(data as Record<string, unknown>);
+            await asyncNextAction?.onClick?.(data);
             setError(null);
             navigate(url);
         } catch (error) {
-            setError((error as Error).message);
+            setError((error as HttpException).message);
         } finally {
             setIsLoading(false);
         }
@@ -148,10 +158,10 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
     const onSubmitHandler = useCallback(async () => {
         setIsLoading(true);
         try {
-            await onSubmit?.(data as Record<string, unknown>);
+            await onSubmit?.(data);
             setError(null);
         } catch (error) {
-            setError((error as Error).message);
+            setError((error as HttpException).message);
         } finally {
             setIsLoading(false);
         }
@@ -183,7 +193,7 @@ function useLowLevelWizardContextValues<Data = Record<string, unknown>>(arg: Use
         [onAsyncNext, onBack, onNext, onSkip, onSubmitHandler, t]
     );
 
-    return useMemo(
+    return useMemo<LowLevelWizardContextType<Data>>(
         () => ({
             globalTitle,
             currentStep,

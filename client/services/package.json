@@ -5,6 +5,7 @@
     "author": "emmanuelonah",
     "license": "MIT",
     "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "module": "dist/services.esm.js",
     "typings": "dist/index.d.ts",
     "files": [
@@ -17,7 +18,7 @@
     "scripts": {
         "in": "yarn install",
         "l": "yarn link",
-        "start": "tsdx watch",
+        "dev": "tsdx watch",
         "build": "tsdx build",
         "test": "tsdx test",
         "lint": "npx eslint . --ext .ts",

@@ -1,9 +1,5 @@
 import React from 'react';
 
-import { ExampleComponent } from '@afb/components';
-
-function App() {
-    return <ExampleComponent />;
+export default function App() {
+    return <p>Welcome to Customers App</p>;
 }
-
-export default App;

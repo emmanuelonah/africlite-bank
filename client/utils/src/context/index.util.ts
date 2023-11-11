@@ -2,7 +2,14 @@ import React from 'react';
 
 import { throwError, __DEV__, __TEST__ } from '..';
 
-export function createContext<ContextType>(displayName: string) {
+export type ReturnType<ContextType> = [
+    React.Provider<ContextType>,
+    () => ContextType,
+    React.Consumer<ContextType>,
+    string | undefined,
+];
+
+export function createContext<ContextType>(displayName: string): ReturnType<ContextType> {
     const Context = React.createContext<ContextType>(null!);
     if (__DEV__ || __TEST__) Context.displayName = displayName;
 
@@ -20,5 +27,5 @@ export function createContext<ContextType>(displayName: string) {
         return context;
     }
 
-    return [Context.Provider, useContext, Context.Consumer, Context.displayName] as const;
+    return [Context.Provider, useContext, Context.Consumer, Context.displayName];
 }

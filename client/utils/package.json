@@ -20,7 +20,7 @@
         "l": "yarn link",
         "dev": "tsdx watch",
         "build": "tsdx build",
-        "test": "tsdx test",
+        "test": "tsdx test --watchAll=true",
         "lint": "npx eslint . --ext .ts",
         "format": "prettier --write './src/**/*.ts'",
         "pre:commit": "yarn run lint",

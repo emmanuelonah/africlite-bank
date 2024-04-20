@@ -22,7 +22,7 @@
         "build:pkgs": "yarn --cwd ../utils build && yarn --cwd ../services build && yarn --cwd ../i18n build",
         "dev": "yarn run build:pkgs && yarn run link:pkgs && tsdx watch",
         "build": "yarn run build:pkgs && tsdx build",
-        "test": "tsdx test --passWithNoTests",
+        "test": "tsdx test --watchAll=true",
         "lint": "npx eslint . --ext .ts",
         "format": "prettier --write './src/**/*.ts'",
         "pre:commit": "yarn run lint",
@@ -76,6 +76,7 @@
         "husky": "^8.0.3",
         "prettier": "^3.0.3",
         "size-limit": "^10.0.1",
+        "ts-jest": "^27.0.6",
         "tsdx": "^0.14.1",
         "tslib": "^2.6.2",
         "typescript": "*"

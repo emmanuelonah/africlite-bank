@@ -3,6 +3,9 @@ module.exports = {
     setupFilesAfterEnv: ['<rootDir>/setup-tests.ts'],
     testPathIgnorePatterns: ['<rootDir>/node_modules/'],
     testEnvironment: 'jsdom',
+    transform: {
+        '^.+\\.(js|jsx|ts|tsx)$': 'ts-jest',
+    },
     transformIgnorePatterns: ['/node_modules/'],
     coveragePathIgnorePatterns: ['./node_modules', './coverage', './jest.config.js'],
     coverageThreshold: {
